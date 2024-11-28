@@ -107,6 +107,7 @@ export const OrgStructureTypeUpdateScreen: React.FC<
         body: {
           id: parsedValue?.id || '',
           name: parsedValue?.name || '',
+          code: parsedValue?.code || '',
         },
       });
     } catch (error: unknown) {
@@ -123,6 +124,7 @@ export const OrgStructureTypeUpdateScreen: React.FC<
         formHandler.setValues({
           id: orgStructureType?.id ?? '',
           name: orgStructureType?.name ?? '',
+          code: orgStructureType?.code ?? '',
         });
         formHandler.resetDirty();
       }

@@ -82,6 +82,7 @@ export const PositionStructureTypeCreateScreen: React.FC<
       createPositionStructureType({
         body: {
           name: parsedValue?.name || '',
+          code: parsedValue?.code || '',
         },
       });
     } catch (error: unknown) {

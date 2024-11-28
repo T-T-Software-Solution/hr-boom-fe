@@ -10963,7 +10963,7 @@
         "additionalProperties": false
       },
       "OrgStructureTypeVm": {
-        "required": ["id", "name"],
+        "required": ["code", "id", "name"],
         "type": "object",
         "properties": {
           "id": {
@@ -10971,6 +10971,10 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
             "type": "string",
             "nullable": true
           }
@@ -11088,10 +11092,14 @@
         "additionalProperties": false
       },
       "OrgStructureTypesCreate": {
-        "required": ["name"],
+        "required": ["code", "name"],
         "type": "object",
         "properties": {
           "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
             "minLength": 1,
             "type": "string"
           }
@@ -11099,7 +11107,7 @@
         "additionalProperties": false
       },
       "OrgStructureTypesUpdate": {
-        "required": ["name"],
+        "required": ["code", "name"],
         "type": "object",
         "properties": {
           "id": {
@@ -11107,6 +11115,10 @@
             "nullable": true
           },
           "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
             "minLength": 1,
             "type": "string"
           }
@@ -11191,9 +11203,8 @@
             "type": "string",
             "nullable": true
           },
-          "parentId": {
-            "type": "string",
-            "nullable": true
+          "parent": {
+            "$ref": "#/components/schemas/OrgStructureVm"
           }
         },
         "additionalProperties": false
@@ -11702,7 +11713,7 @@
         "additionalProperties": false
       },
       "PositionStructureTypeVm": {
-        "required": ["id", "name"],
+        "required": ["code", "id", "name"],
         "type": "object",
         "properties": {
           "id": {
@@ -11710,6 +11721,10 @@
             "nullable": true
           },
           "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
             "type": "string",
             "nullable": true
           }
@@ -11827,10 +11842,14 @@
         "additionalProperties": false
       },
       "PositionStructureTypesCreate": {
-        "required": ["name"],
+        "required": ["code", "name"],
         "type": "object",
         "properties": {
           "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
             "minLength": 1,
             "type": "string"
           }
@@ -11838,7 +11857,7 @@
         "additionalProperties": false
       },
       "PositionStructureTypesUpdate": {
-        "required": ["name"],
+        "required": ["code", "name"],
         "type": "object",
         "properties": {
           "id": {
@@ -11846,6 +11865,10 @@
             "nullable": true
           },
           "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
             "minLength": 1,
             "type": "string"
           }
@@ -11892,9 +11915,8 @@
             "type": "string",
             "nullable": true
           },
-          "parentId": {
-            "type": "string",
-            "nullable": true
+          "parent": {
+            "$ref": "#/components/schemas/PositionStructureVm"
           }
         },
         "additionalProperties": false

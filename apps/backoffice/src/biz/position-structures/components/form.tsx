@@ -35,6 +35,7 @@ interface PositionStructureFormProps {
   isUpdate?: boolean;
   dropdowns: {
     positionStructureTypes: ComboboxData;
+    positionStructures: ComboboxData;
   };
 }
 
@@ -144,11 +145,15 @@ export const PositionStructureForm: React.FC<PositionStructureFormProps> = ({
       </Grid>
       <Grid gutter="md">
         <Grid.Col span={{ base: 12, md: 4 }}>
-          <TextInput
+          <Select
             label="รหัสหัวหน้าโดยตำแหน่ง"
             placeholder="รหัสหัวหน้าโดยตำแหน่ง"
+            data={dropdowns.positionStructures}
             key={key('parentId')}
             {...getInputProps('parentId')}
+            clearable
+            searchable
+            nothingFoundMessage="ไม่พบข้อมูล"
           />{' '}
         </Grid.Col>
       </Grid>{' '}

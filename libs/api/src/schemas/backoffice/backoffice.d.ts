@@ -7752,6 +7752,7 @@ export interface components {
     OrgStructureTypeVm: {
       id: string | null;
       name: string | null;
+      code: string | null;
     };
     OrgStructureTypeVmPaging: {
       /** Format: int32 */
@@ -7783,10 +7784,12 @@ export interface components {
     };
     OrgStructureTypesCreate: {
       name: string;
+      code: string;
     };
     OrgStructureTypesUpdate: {
       id?: string | null;
       name: string;
+      code: string;
     };
     OrgStructureVm: {
       id: string | null;
@@ -7809,7 +7812,7 @@ export interface components {
       emailCompany?: string | null;
       logoComppanyPath?: string | null;
       description?: string | null;
-      parentId?: string | null;
+      parent?: components['schemas']['OrgStructureVm'];
     };
     OrgStructureVmPaging: {
       /** Format: int32 */
@@ -7940,6 +7943,7 @@ export interface components {
     PositionStructureTypeVm: {
       id: string | null;
       name: string | null;
+      code: string | null;
     };
     PositionStructureTypeVmPaging: {
       /** Format: int32 */
@@ -7975,10 +7979,12 @@ export interface components {
     };
     PositionStructureTypesCreate: {
       name: string;
+      code: string;
     };
     PositionStructureTypesUpdate: {
       id?: string | null;
       name: string;
+      code: string;
     };
     PositionStructureVm: {
       id: string | null;
@@ -7991,7 +7997,7 @@ export interface components {
       salary?: number | null;
       description?: string | null;
       descriptionEn?: string | null;
-      parentId?: string | null;
+      parent?: components['schemas']['PositionStructureVm'];
     };
     PositionStructureVmPaging: {
       /** Format: int32 */

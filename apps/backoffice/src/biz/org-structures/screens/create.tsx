@@ -32,6 +32,8 @@ import type { SocialSecurityType } from '@backoffice/biz/social-security-types/t
 
 import type { Province } from '@backoffice/biz/provinces/types';
 
+import type { OrgStructure } from '@backoffice/biz/org-structures/types';
+
 interface OrgStructureCreateScreenProps {
   modalId?: string;
 }
@@ -69,6 +71,16 @@ export const OrgStructureCreateScreen: React.FC<
 
   const { data: provinces, isLoading: isProvincesLoading } =
     $backofficeApi.useQuery('get', '/api/Provinces', {
+      params: {
+        query: {
+          pageNo: 1,
+          pageSize: 500,
+        },
+      },
+    });
+
+  const { data: orgStructures, isLoading: isOrgStructuresLoading } =
+    $backofficeApi.useQuery('get', '/api/OrgStructures', {
       params: {
         query: {
           pageNo: 1,
@@ -148,7 +160,8 @@ export const OrgStructureCreateScreen: React.FC<
   const isScreenLoading =
     isOrgStructureTypesLoading ||
     isSocialSecurityTypesLoading ||
-    isProvincesLoading;
+    isProvincesLoading ||
+    isOrgStructuresLoading;
   if (isScreenLoading) {
     return <LoadingOverlay visible={isScreenLoading} />;
   }
@@ -174,6 +187,11 @@ export const OrgStructureCreateScreen: React.FC<
                   provinces?.contents ?? [],
                   'id',
                   'name',
+                ),
+                orgStructures: getComboboxData(
+                  orgStructures?.contents ?? [],
+                  'id',
+                  'code',
                 ),
               }}
             />

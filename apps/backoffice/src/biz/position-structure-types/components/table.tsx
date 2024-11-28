@@ -31,4 +31,20 @@ export const positionStructureTypeTableColumns: MRT_ColumnDef<PositionStructureT
         );
       },
     },
+    {
+      accessorKey: 'code',
+      header: 'โค้ดชนิดของตำแหน่ง',
+      enableResizing: false,
+      Cell: ({ row }) => {
+        const value = row.original.code ?? '';
+        return (
+          <Box
+            component="div"
+            className="whitespace-normal text-pretty break-all"
+          >
+            {value}
+          </Box>
+        );
+      },
+    },
   ];

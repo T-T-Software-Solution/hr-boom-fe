@@ -37,6 +37,7 @@ interface OrgStructureFormProps {
     orgStructureTypes: ComboboxData;
     socialSecurityTypes: ComboboxData;
     provinces: ComboboxData;
+    orgStructures: ComboboxData;
   };
 }
 
@@ -289,11 +290,15 @@ export const OrgStructureForm: React.FC<OrgStructureFormProps> = ({
       </Grid>
       <Grid gutter="md">
         <Grid.Col span={{ base: 12, md: 4 }}>
-          <TextInput
+          <Select
             label="รหัสต้นสังกัด"
             placeholder="รหัสต้นสังกัด"
+            data={dropdowns.orgStructures}
             key={key('parentId')}
             {...getInputProps('parentId')}
+            clearable
+            searchable
+            nothingFoundMessage="ไม่พบข้อมูล"
           />{' '}
         </Grid.Col>
       </Grid>{' '}

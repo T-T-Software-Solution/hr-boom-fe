@@ -30,4 +30,20 @@ export const orgStructureTypeTableColumns: MRT_ColumnDef<OrgStructureType>[] = [
       );
     },
   },
+  {
+    accessorKey: 'code',
+    header: 'โค้ดของชนิดองค์กร',
+    enableResizing: false,
+    Cell: ({ row }) => {
+      const value = row.original.code ?? '';
+      return (
+        <Box
+          component="div"
+          className="whitespace-normal text-pretty break-all"
+        >
+          {value}
+        </Box>
+      );
+    },
+  },
 ];

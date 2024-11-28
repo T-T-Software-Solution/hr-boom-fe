@@ -7,12 +7,14 @@ import type {
 export const positionStructureTypeFormDefaultValues: PositionStructureTypeForm =
   {
     name: '',
+    code: '',
     id: '',
   };
 
 export const positionStructureTypeSearchFormDefaultValues: PositionStructureTypeSearchForm =
   {
     name: null,
+    code: null,
   };
 
 export const defaultPagination = {

@@ -109,6 +109,7 @@ export const PositionStructureTypeUpdateScreen: React.FC<
         body: {
           id: parsedValue?.id || '',
           name: parsedValue?.name || '',
+          code: parsedValue?.code || '',
         },
       });
     } catch (error: unknown) {
@@ -125,6 +126,7 @@ export const PositionStructureTypeUpdateScreen: React.FC<
         formHandler.setValues({
           id: positionStructureType?.id ?? '',
           name: positionStructureType?.name ?? '',
+          code: positionStructureType?.code ?? '',
         });
         formHandler.resetDirty();
       }

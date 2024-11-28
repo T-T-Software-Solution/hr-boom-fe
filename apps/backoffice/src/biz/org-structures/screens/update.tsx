@@ -36,6 +36,8 @@ import type { SocialSecurityType } from '@backoffice/biz/social-security-types/t
 
 import type { Province } from '@backoffice/biz/provinces/types';
 
+import type { OrgStructure } from '@backoffice/biz/org-structures/types';
+
 interface OrgStructureUpdateScreenProps {
   modalId?: string;
   id: string;
@@ -73,6 +75,16 @@ export const OrgStructureUpdateScreen: React.FC<
 
   const { data: provinces, isLoading: isProvincesLoading } =
     $backofficeApi.useQuery('get', '/api/Provinces', {
+      params: {
+        query: {
+          pageNo: 1,
+          pageSize: 500,
+        },
+      },
+    });
+
+  const { data: orgStructures, isLoading: isOrgStructuresLoading } =
+    $backofficeApi.useQuery('get', '/api/OrgStructures', {
       params: {
         query: {
           pageNo: 1,
@@ -195,7 +207,7 @@ export const OrgStructureUpdateScreen: React.FC<
           previewLogoComppanyPath: logoComppanyPath?.fullPath ?? '',
           originalLogoComppanyPath: logoComppanyPath?.originalFileName ?? '',
           description: orgStructure?.description ?? '',
-          parentId: orgStructure?.parentId ?? '',
+          parentId: orgStructure?.parent?.id ?? '',
         });
         formHandler.resetDirty();
       }
@@ -208,7 +220,8 @@ export const OrgStructureUpdateScreen: React.FC<
     isOrgStructureLoading ||
     isOrgStructureTypesLoading ||
     isSocialSecurityTypesLoading ||
-    isProvincesLoading;
+    isProvincesLoading ||
+    isOrgStructuresLoading;
   if (isScreenLoading) {
     return <LoadingOverlay visible={isScreenLoading} />;
   }
@@ -235,6 +248,11 @@ export const OrgStructureUpdateScreen: React.FC<
                   provinces?.contents ?? [],
                   'id',
                   'name',
+                ),
+                orgStructures: getComboboxData(
+                  orgStructures?.contents ?? [],
+                  'id',
+                  'code',
                 ),
               }}
             />

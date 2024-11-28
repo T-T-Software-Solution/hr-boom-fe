@@ -34,6 +34,14 @@ export const PositionStructureTypeSearchForm: React.FC<
           key={key('name')}
           {...getInputProps('name')}
         />
+      </Grid.Col>
+      <Grid.Col span={{ base: 12, md: 3 }}>
+        <TextInput
+          placeholder="โค้ดชนิดของตำแหน่ง"
+          flex={1}
+          key={key('code')}
+          {...getInputProps('code')}
+        />
       </Grid.Col>{' '}
     </Grid>
   );

@@ -63,6 +63,16 @@ export const OrgStructureTypeForm: React.FC<OrgStructureTypeFormProps> = ({
             withAsterisk
           />{' '}
         </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <TextInput
+            label="โค้ดของชนิดองค์กร"
+            placeholder="โค้ดของชนิดองค์กร"
+            key={key('code')}
+            {...getInputProps('code')}
+            withAsterisk
+          />{' '}
+        </Grid.Col>
       </Grid>{' '}
     </Container>
   );

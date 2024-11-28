@@ -35,6 +35,8 @@ import { getErrorMessage } from '@backoffice/utils/error';
 
 import type { PositionStructureType } from '@backoffice/biz/position-structure-types/types';
 
+import type { PositionStructure } from '@backoffice/biz/position-structures/types';
+
 interface PositionStructureUpdateScreenProps {
   modalId?: string;
   id: string;
@@ -61,6 +63,16 @@ export const PositionStructureUpdateScreen: React.FC<
       },
     },
   });
+
+  const { data: positionStructures, isLoading: isPositionStructuresLoading } =
+    $backofficeApi.useQuery('get', '/api/PositionStructures', {
+      params: {
+        query: {
+          pageNo: 1,
+          pageSize: 500,
+        },
+      },
+    });
   const { data: positionStructure, isLoading: isPositionStructureLoading } =
     $backofficeApi.useQuery('get', '/api/PositionStructures/{id}', {
       params: {
@@ -152,7 +164,7 @@ export const PositionStructureUpdateScreen: React.FC<
           salary: Number.parseFloat(String(positionStructure?.salary)),
           description: positionStructure?.description ?? '',
           descriptionEn: positionStructure?.descriptionEn ?? '',
-          parentId: positionStructure?.parentId ?? '',
+          parentId: positionStructure?.parent?.id ?? '',
         });
         formHandler.resetDirty();
       }
@@ -162,7 +174,9 @@ export const PositionStructureUpdateScreen: React.FC<
 
   const isEventLoading = isUpdatePositionStructureLoading;
   const isScreenLoading =
-    isPositionStructureLoading || isPositionStructureTypesLoading;
+    isPositionStructureLoading ||
+    isPositionStructureTypesLoading ||
+    isPositionStructuresLoading;
   if (isScreenLoading) {
     return <LoadingOverlay visible={isScreenLoading} />;
   }
@@ -179,6 +193,11 @@ export const PositionStructureUpdateScreen: React.FC<
                   positionStructureTypes?.contents ?? [],
                   'id',
                   'name',
+                ),
+                positionStructures: getComboboxData(
+                  positionStructures?.contents ?? [],
+                  'id',
+                  'code',
                 ),
               }}
             />

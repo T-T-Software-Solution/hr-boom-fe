@@ -64,6 +64,16 @@ export const PositionStructureTypeForm: React.FC<
             withAsterisk
           />{' '}
         </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <TextInput
+            label="โค้ดชนิดของตำแหน่ง"
+            placeholder="โค้ดชนิดของตำแหน่ง"
+            key={key('code')}
+            {...getInputProps('code')}
+            withAsterisk
+          />{' '}
+        </Grid.Col>
       </Grid>{' '}
     </Container>
   );

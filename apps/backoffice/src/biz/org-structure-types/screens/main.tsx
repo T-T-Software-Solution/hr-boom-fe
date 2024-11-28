@@ -74,6 +74,7 @@ export const OrgStructureTypeMainScreen = () => {
 
   const [search, setSearch] = useQueryStates({
     name: parseAsString,
+    code: parseAsString,
   });
 
   const searchFormHandler = useOrgStructureTypeSearchForm({
@@ -196,6 +197,7 @@ export const OrgStructureTypeMainScreen = () => {
     setPagination({ pageIndex: 1, pageSize: 10 });
     setSearch({
       name: values?.name,
+      code: values?.code,
     });
   };
 
@@ -204,6 +206,7 @@ export const OrgStructureTypeMainScreen = () => {
     setPagination({ pageIndex: 1, pageSize: 10 });
     setSearch({
       name: orgStructureTypeSearchFormDefaultValues?.name,
+      code: orgStructureTypeSearchFormDefaultValues?.code,
     });
   };
 

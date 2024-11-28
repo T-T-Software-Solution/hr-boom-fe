@@ -8,6 +8,12 @@ export const positionStructureTypeCreateSchema = z.object({
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
+  code: z
+    .string({ message: 'โค้ดชนิดของตำแหน่ง is required' })
+    .transform((v) => v.trim())
+    .refine((v) => v !== null && v !== '', {
+      message: 'โค้ดชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
+    }),
 });
 
 export const positionStructureTypeUpdateSchema = z.object({
@@ -18,10 +24,17 @@ export const positionStructureTypeUpdateSchema = z.object({
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
+  code: z
+    .string({ message: 'โค้ดชนิดของตำแหน่ง is required' })
+    .transform((v) => v.trim())
+    .refine((v) => v !== null && v !== '', {
+      message: 'โค้ดชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
+    }),
 });
 
 export const positionStructureTypeSearchSchema = z.object({
   name: z.string({ message: 'ชื่อชนิดของตำแหน่ง is required' }).nullish(),
+  code: z.string({ message: 'โค้ดชนิดของตำแหน่ง is required' }).nullish(),
 });
 
 export type PositionStructureType =

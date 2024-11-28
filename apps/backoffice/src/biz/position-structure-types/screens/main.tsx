@@ -74,6 +74,7 @@ export const PositionStructureTypeMainScreen = () => {
 
   const [search, setSearch] = useQueryStates({
     name: parseAsString,
+    code: parseAsString,
   });
 
   const searchFormHandler = usePositionStructureTypeSearchForm({
@@ -196,6 +197,7 @@ export const PositionStructureTypeMainScreen = () => {
     setPagination({ pageIndex: 1, pageSize: 10 });
     setSearch({
       name: values?.name,
+      code: values?.code,
     });
   };
 
@@ -204,6 +206,7 @@ export const PositionStructureTypeMainScreen = () => {
     setPagination({ pageIndex: 1, pageSize: 10 });
     setSearch({
       name: positionStructureTypeSearchFormDefaultValues?.name,
+      code: positionStructureTypeSearchFormDefaultValues?.code,
     });
   };
 

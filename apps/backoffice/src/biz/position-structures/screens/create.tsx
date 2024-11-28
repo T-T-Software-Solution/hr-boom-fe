@@ -31,6 +31,8 @@ import { getErrorMessage } from '@backoffice/utils/error';
 
 import type { PositionStructureType } from '@backoffice/biz/position-structure-types/types';
 
+import type { PositionStructure } from '@backoffice/biz/position-structures/types';
+
 interface PositionStructureCreateScreenProps {
   modalId?: string;
 }
@@ -57,6 +59,16 @@ export const PositionStructureCreateScreen: React.FC<
       },
     },
   });
+
+  const { data: positionStructures, isLoading: isPositionStructuresLoading } =
+    $backofficeApi.useQuery('get', '/api/PositionStructures', {
+      params: {
+        query: {
+          pageNo: 1,
+          pageSize: 500,
+        },
+      },
+    });
   const {
     mutate: createPositionStructure,
     isPending: isCreatePositionStructureLoading,
@@ -114,7 +126,8 @@ export const PositionStructureCreateScreen: React.FC<
   };
 
   const isEventLoading = isCreatePositionStructureLoading;
-  const isScreenLoading = isPositionStructureTypesLoading;
+  const isScreenLoading =
+    isPositionStructureTypesLoading || isPositionStructuresLoading;
   if (isScreenLoading) {
     return <LoadingOverlay visible={isScreenLoading} />;
   }
@@ -130,6 +143,11 @@ export const PositionStructureCreateScreen: React.FC<
                   positionStructureTypes?.contents ?? [],
                   'id',
                   'name',
+                ),
+                positionStructures: getComboboxData(
+                  positionStructures?.contents ?? [],
+                  'id',
+                  'code',
                 ),
               }}
             />

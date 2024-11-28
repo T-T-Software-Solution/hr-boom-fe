@@ -346,7 +346,7 @@ export const OrgStructureDetailScreen: React.FC<
                 รหัสต้นสังกัด{' '}
               </Text>
               <Box component="div" w="fit-content" className="flex-1">
-                {orgStructure?.parentId ?? '-'}{' '}
+                {orgStructure?.parent?.code ?? '-'}{' '}
               </Box>
             </Stack>
           </Grid.Col>

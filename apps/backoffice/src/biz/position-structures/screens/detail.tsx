@@ -210,7 +210,7 @@ export const PositionStructureDetailScreen: React.FC<
                 รหัสหัวหน้าโดยตำแหน่ง{' '}
               </Text>
               <Box component="div" w="fit-content" className="flex-1">
-                {positionStructure?.parentId ?? '-'}{' '}
+                {positionStructure?.parent?.code ?? '-'}{' '}
               </Box>
             </Stack>
           </Grid.Col>

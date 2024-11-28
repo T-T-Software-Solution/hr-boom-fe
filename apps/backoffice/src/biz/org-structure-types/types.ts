@@ -8,6 +8,12 @@ export const orgStructureTypeCreateSchema = z.object({
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดขององค์กร ต้องไม่เป็นค่าว่าง',
     }),
+  code: z
+    .string({ message: 'โค้ดของชนิดองค์กร is required' })
+    .transform((v) => v.trim())
+    .refine((v) => v !== null && v !== '', {
+      message: 'โค้ดของชนิดองค์กร ต้องไม่เป็นค่าว่าง',
+    }),
 });
 
 export const orgStructureTypeUpdateSchema = z.object({
@@ -18,10 +24,17 @@ export const orgStructureTypeUpdateSchema = z.object({
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดขององค์กร ต้องไม่เป็นค่าว่าง',
     }),
+  code: z
+    .string({ message: 'โค้ดของชนิดองค์กร is required' })
+    .transform((v) => v.trim())
+    .refine((v) => v !== null && v !== '', {
+      message: 'โค้ดของชนิดองค์กร ต้องไม่เป็นค่าว่าง',
+    }),
 });
 
 export const orgStructureTypeSearchSchema = z.object({
   name: z.string({ message: 'ชื่อชนิดขององค์กร is required' }).nullish(),
+  code: z.string({ message: 'โค้ดของชนิดองค์กร is required' }).nullish(),
 });
 
 export type OrgStructureType =

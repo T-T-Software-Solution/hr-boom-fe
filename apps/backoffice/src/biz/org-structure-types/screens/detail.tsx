@@ -114,6 +114,17 @@ export const OrgStructureTypeDetailScreen: React.FC<
               </Box>
             </Stack>
           </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Stack align="stretch" justify="center" gap="xs">
+              <Text size="sm" fw={900} c="dimmed">
+                โค้ดของชนิดองค์กร{' '}
+              </Text>
+              <Box component="div" w="fit-content" className="flex-1">
+                {orgStructureType?.code ?? '-'}{' '}
+              </Box>
+            </Stack>
+          </Grid.Col>
         </Grid>{' '}
       </Card>
     </Stack>
