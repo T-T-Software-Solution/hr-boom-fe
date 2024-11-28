@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tt-ss-hr/api": ["libs/api/src/index.ts"],
+      "@tt-ss-hr/shared-ui": ["libs/shared/ui/src/index.ts"],
+      "@tt-ss-hr/shared-utils": ["libs/shared/utils/src/index.ts"],
+      "@backoffice/*": ["apps/backoffice/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

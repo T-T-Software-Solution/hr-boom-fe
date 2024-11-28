@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "nrwl.angular-console",
+    "biomejs.biome",
+    "ms-playwright.playwright",
+    "aaron-bond.better-comments",
+    "streetsidesoftware.code-spell-checker",
+    "ms-vsliveshare.vsliveshar",
+    "bradlc.vscode-tailwindcss",
+    "pflannery.vscode-versionlens",
+    "wix.vscode-import-cost",
+    "vivaxy.vscode-conventional-commits",
+    "eamodio.gitlens",
+    "yoavbls.pretty-ts-errors",
+  ]
+}

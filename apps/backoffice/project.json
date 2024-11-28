@@ -1,0 +1,30 @@
+{
+  "name": "backoffice",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backoffice",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project backoffice --web",
+  "targets": {
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "backoffice:build",
+        "dev": true,
+        "port": 3002,
+        "experimentalHttps": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "backoffice:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "backoffice:build:production",
+          "dev": false
+        }
+      }
+    }
+  }
+}
