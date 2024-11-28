@@ -2,65 +2,30 @@
 
 import { $backofficeApi, ApiError } from '@backoffice/services/api';
 import { getErrorMessage } from '@backoffice/utils/error';
-import { useRouter } from 'next/navigation';
 import {
-  ActionIcon,
-  Box,
   Button,
   Card,
-  Fieldset,
   Grid,
   Group,
-  LoadingOverlay,
   Stack,
   Text,
   Title,
-  Tooltip,
-  rem,
+  Tree,
+  TreeNodeData
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import {
-  IconDownload,
-  IconEdit,
-  IconEye,
-  IconSearch,
-  IconTrash,
-  IconX,
-} from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import {
-  cleanSearchParams,
-  createTableConfig,
-  getComboboxData,
-  getFileUrl,
-  viewFileInNewTabOrDownload,
-} from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
-import { zodResolver } from 'mantine-form-zod-resolver';
-import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import {
-  parseAsBoolean,
   parseAsInteger,
-  parseAsIsoDateTime,
-  parseAsFloat,
-  parseAsString,
-  useQueryStates,
+  useQueryStates
 } from 'nuqs';
-import { OrgStructureSearchForm } from '../components/search-form';
-import { orgStructureTableColumns } from '../components/table';
+import { Leaf } from '../components/leaf';
 import {
-  defaultPagination,
-  orgStructureSearchFormDefaultValues,
+  defaultPagination
 } from '../constants';
-import {
-  OrgStructureSearchFormProvider,
-  useOrgStructureSearchForm,
-} from '../context';
-import {
-  type OrgStructureSearchForm as OrgStructureSearchFormType,
-  orgStructureSearchSchema,
-} from '../types';
+import { OrgStructure } from '../types';
 import { OrgStructureCreateScreen } from './create';
 import { OrgStructureUpdateScreen } from './update';
 
@@ -72,22 +37,6 @@ export const OrgStructureMainScreen = () => {
     pageSize: parseAsInteger.withDefault(defaultPagination.pageSize),
   });
 
-  const [search, setSearch] = useQueryStates({
-    code: parseAsString,
-    name: parseAsString,
-    nameEn: parseAsString,
-  });
-
-  const searchFormHandler = useOrgStructureSearchForm({
-    mode: 'uncontrolled',
-    initialValues: {
-      ...orgStructureSearchFormDefaultValues,
-      ...search,
-    },
-    validateInputOnChange: true,
-    validate: zodResolver(orgStructureSearchSchema),
-  });
-
   const {
     data: orgStructures,
     isLoading: isOrgStructuresLoading,
@@ -97,7 +46,6 @@ export const OrgStructureMainScreen = () => {
       query: {
         pageNo: pagination.pageIndex,
         pageSize: pagination.pageSize,
-        ...cleanSearchParams(search),
       },
     },
   });
@@ -162,119 +110,51 @@ export const OrgStructureMainScreen = () => {
     });
   };
 
-  const handleDetail = (id: string) => {
-    router.push(`/org-structure/detail/${id}`);
-  };
-
-  const handleCreate = () => {
+  const handleCreate = (parentId?: string) => {
     const modalId = 'org-structure-create-modal';
     modals.open({
       modalId,
       title: 'เพิ่ม ข้อมูลโครงสร้างองค์กร',
-      children: <OrgStructureCreateScreen modalId={modalId} />,
+      children: <OrgStructureCreateScreen modalId={modalId} parentId={parentId ?? undefined} />,
       size: 'xl',
     });
   };
+  
 
-  const handleViewFile = async (file?: string | null) => {
-    if (!file) {
-      notifications.show({
-        color: 'red',
-        message: 'ไม่พบไฟล์',
-      });
-      return;
-    }
+  function transformData(apiData?: OrgStructure[] | null): TreeNodeData[] {
+    const map: { [key: string]: TreeNodeData } = {};
+    if (!apiData) return [];
 
-    const fileUrl = getFileUrl(file);
-    viewFileInNewTabOrDownload({
-      uploadFile: fileUrl?.fileName,
-      previewFile: fileUrl?.fullPath,
+    apiData.forEach(item => {
+      map[String(item.id)] = {
+        label: item.name,
+        value: String(item.id),
+        nodeProps: {
+          typeName: item.orgStructureType?.name || '',
+          orgCode: item.code,
+          handleCreate,
+          handleUpdate,
+          handleDelete,
+        },
+        children: [],
+      };
     });
-  };
 
-  const handleSearchSubmit = (values: OrgStructureSearchFormType) => {
-    setPagination({ pageIndex: 1, pageSize: 10 });
-    setSearch({
-      code: values?.code,
-      name: values?.name,
-      nameEn: values?.nameEn,
+    const result: TreeNodeData[] = [];
+    apiData.forEach(item => {
+      if (item.parent && map[String(item.parent.id)]) {
+        map[String(item.parent.id)].children?.push(map[String(item.id)]);
+      } else {
+        result.push(map[String(item.id)]);
+      }
     });
-  };
 
-  const handleClearSearch = () => {
-    searchFormHandler.reset();
-    setPagination({ pageIndex: 1, pageSize: 10 });
-    setSearch({
-      code: orgStructureSearchFormDefaultValues?.code,
-      name: orgStructureSearchFormDefaultValues?.name,
-      nameEn: orgStructureSearchFormDefaultValues?.nameEn,
-    });
-  };
+    return result;
+  }
+
+  const treeData = transformData(orgStructures?.contents);
 
   const isEventLoading = isOrgStructuresLoading || isDeleteOrgStructurePending;
-  const table = useMantineReactTable({
-    ...createTableConfig({
-      columns: orgStructureTableColumns,
-      data: orgStructures?.contents ?? [],
-      totalCount: orgStructures?.totalCount ?? 0,
-      pagination,
-      setPagination,
-      isEventLoading,
-      isError: isOrgStructuresError,
-    }),
-    renderRowActions: ({ row }) => (
-      <Group display="flex" w="100%" gap="xs">
-        <Tooltip label="รายละเอียด" position="bottom">
-          <ActionIcon
-            aria-label="รายละเอียด"
-            color="blue"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleDetail(row?.original?.id ?? '')}
-          >
-            <IconEye stroke={1.5} style={{ width: rem(18), height: rem(18) }} />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label="แก้ไข" position="bottom">
-          <ActionIcon
-            aria-label="แก้ไข"
-            color="orange"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleUpdate(row?.original?.id ?? '')}
-          >
-            <IconEdit
-              stroke={1.5}
-              style={{ width: rem(18), height: rem(18) }}
-            />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label="ลบ" position="bottom">
-          <ActionIcon
-            aria-label="ลบ"
-            color="red"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleDelete(row?.original?.id)}
-          >
-            <IconTrash
-              stroke={1.5}
-              style={{ width: rem(18), height: rem(18) }}
-            />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    ),
-  });
 
   return (
     <Stack gap="xs">
@@ -282,14 +162,6 @@ export const OrgStructureMainScreen = () => {
         <Title order={1} size="h3">
           ข้อมูลโครงสร้างองค์กร{' '}
         </Title>
-        <Button
-          color="primary"
-          size="xs"
-          variant="outline"
-          onClick={handleCreate}
-        >
-          เพิ่ม ข้อมูลโครงสร้างองค์กร{' '}
-        </Button>
       </Group>
       <Card
         withBorder
@@ -298,49 +170,26 @@ export const OrgStructureMainScreen = () => {
         padding="lg"
         className="flex flex-col gap-2 w-full overflow-hidden"
       >
-        <OrgStructureSearchFormProvider form={searchFormHandler}>
-          <Fieldset variant="unstyled" disabled={isEventLoading}>
-            <form
-              onSubmit={searchFormHandler.onSubmit(handleSearchSubmit)}
-              className="flex flex-col gap-4"
+        <Grid justify="flex-start" align="flex-start">
+          <Grid.Col span={{ base: 12, md: 2 }}>
+            <Button
+              color="primary"
+              size="xs"
+              variant="outline"
+              onClick={() => handleCreate()}
             >
-              <OrgStructureSearchForm />
-              <Grid justify="flex-end" align="flex-end">
-                {Object.values(search).some(
-                  (value) => value !== null && value !== undefined,
-                ) && (
-                  <Grid.Col span={{ base: 12, md: 2 }}>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      bd="none"
-                      leftSection={<IconX size={14} />}
-                      loading={isEventLoading}
-                      w="100%"
-                      onClick={handleClearSearch}
-                    >
-                      ล้างข้อมูล
-                    </Button>
-                  </Grid.Col>
-                )}
-                <Grid.Col span={{ base: 12, md: 3 }}>
-                  <Button
-                    type="submit"
-                    leftSection={<IconSearch size={14} />}
-                    loading={isEventLoading}
-                    w="100%"
-                  >
-                    ค้นหา
-                  </Button>
-                </Grid.Col>
-              </Grid>
-            </form>
-          </Fieldset>
-        </OrgStructureSearchFormProvider>
+              เพิ่ม โครงสร้างองค์กร{' '}
+            </Button>
+          </Grid.Col>
+        </Grid>
+        <Tree
+          selectOnClick
+          clearSelectionOnOutsideClick
+          data={treeData}
+          levelOffset={100}
+          renderNode={(payload) => <Leaf {...payload} />}
+        />
       </Card>
-      <Box component="div" w="100%" className="overflow-hidden">
-        <MantineReactTable table={table} />
-      </Box>
     </Stack>
   );
 };

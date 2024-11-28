@@ -2,6 +2,7 @@
 
 import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -13,10 +14,10 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { OrgStructureForm } from '../components/form';
 import { orgStructureFormDefaultValues } from '../constants';
 import { OrgStructureFormProvider, useOrgStructureForm } from '../context';
@@ -24,23 +25,15 @@ import {
   type OrgStructureForm as OrgStructureFormType,
   orgStructureCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
-
-import type { OrgStructureType } from '@backoffice/biz/org-structure-types/types';
-
-import type { SocialSecurityType } from '@backoffice/biz/social-security-types/types';
-
-import type { Province } from '@backoffice/biz/provinces/types';
-
-import type { OrgStructure } from '@backoffice/biz/org-structures/types';
 
 interface OrgStructureCreateScreenProps {
   modalId?: string;
+  parentId?: string;
 }
 
 export const OrgStructureCreateScreen: React.FC<
   OrgStructureCreateScreenProps
-> = ({ modalId }) => {
+> = ({ modalId, parentId }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const formHandler = useOrgStructureForm({
@@ -131,21 +124,21 @@ export const OrgStructureCreateScreen: React.FC<
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
           nameEn: parsedValue?.nameEn || '',
-          taxId: parsedValue?.taxId || '',
-          taxId2: parsedValue?.taxId2 || '',
-          socialSecurityTypeId: parsedValue?.socialSecurityTypeId || '',
-          addressTh: parsedValue?.addressTh || '',
-          addressEn: parsedValue?.addressEn || '',
-          provinceId: parsedValue?.provinceId || '',
-          district: parsedValue?.district || '',
-          subdistrict: parsedValue?.subdistrict || '',
+          taxId: parsedValue?.taxId || undefined,
+          taxId2: parsedValue?.taxId2 || undefined,
+          socialSecurityTypeId: parsedValue?.socialSecurityTypeId || undefined,
+          addressTh: parsedValue?.addressTh || undefined,
+          addressEn: parsedValue?.addressEn || undefined,
+          provinceId: parsedValue?.provinceId || undefined,
+          district: parsedValue?.district || undefined,
+          subdistrict: parsedValue?.subdistrict || undefined,
           postalCode: Number(String(parsedValue?.postalCode)),
-          phoneNumber: parsedValue?.phoneNumber || '',
-          faxNumber: parsedValue?.faxNumber || '',
-          emailCompany: parsedValue?.emailCompany || '',
-          logoComppanyPath: logoComppanyPath || '',
-          description: parsedValue?.description || '',
-          parentId: parsedValue?.parentId || '',
+          phoneNumber: parsedValue?.phoneNumber || undefined,
+          faxNumber: parsedValue?.faxNumber || undefined,
+          emailCompany: parsedValue?.emailCompany || undefined,
+          logoComppanyPath: logoComppanyPath || undefined,
+          description: parsedValue?.description || undefined,
+          parentId: parsedValue?.parentId || undefined,
         },
       });
     } catch (error: unknown) {
@@ -155,6 +148,16 @@ export const OrgStructureCreateScreen: React.FC<
       });
     }
   };
+
+  useEffect(
+    function feedDataToForm() {
+      if (orgStructures && !isOrgStructuresLoading && parentId) {
+        formHandler.setFieldValue('parentId', parentId)
+        formHandler.resetDirty();
+      }
+    },
+    [orgStructures, isOrgStructuresLoading],
+  );
 
   const isEventLoading = isCreateOrgStructureLoading;
   const isScreenLoading =
@@ -194,6 +197,7 @@ export const OrgStructureCreateScreen: React.FC<
                   'code',
                 ),
               }}
+              parentId={parentId}
             />
             <Grid justify="flex-end">
               {modalId && (
