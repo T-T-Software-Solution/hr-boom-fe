@@ -1,36 +1,18 @@
 'use client';
-import { useCriminalHistoryFormContext } from '../context';
 import {
-  Button,
-  Checkbox,
   type ComboboxData,
   Container,
-  FileInput,
   Grid,
-  Group,
-  Image,
-  Input,
-  NumberInput,
-  Paper,
   Select,
   TextInput,
-  Textarea,
-  rem,
+  rem
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import {
-  IconCalendar,
-  IconEye,
-  IconFileTypeDoc,
-  IconPhotoScan,
+  IconCalendar
 } from '@tabler/icons-react';
-import { FileDisplay } from '@tt-ss-hr/shared-ui';
-import {
-  checkFileUrl,
-  placeholderImage,
-  viewFileInNewTabOrDownload,
-} from '@tt-ss-hr/shared-utils';
 import 'dayjs/locale/th';
+import { useCriminalHistoryFormContext } from '../context';
 interface CriminalHistoryFormProps {
   isUpdate?: boolean;
   dropdowns: {
@@ -65,9 +47,7 @@ export const CriminalHistoryForm: React.FC<CriminalHistoryFormProps> = ({
             data={dropdowns.employees}
             key={key('employeeId')}
             {...getInputProps('employeeId')}
-            withAsterisk
-            clearable
-            searchable
+            disabled
             nothingFoundMessage="ไม่พบข้อมูล"
           />{' '}
         </Grid.Col>

@@ -3,6 +3,7 @@ import { $backofficeApi } from '@backoffice/services/api';
 import { getErrorMessage } from '@backoffice/utils/error';
 import { Button, Card, Fieldset, Grid, Select, Stack } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { getComboboxData } from '@tt-ss-hr/shared-utils';
 import dynamic from 'next/dynamic';
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
@@ -29,6 +30,19 @@ const EmployeeReportScreen = () => {
     }
   }, [reportId]);
 
+  const {
+    data: employees,
+    isLoading: isEmployeesLoading,
+    isError: isEmployeesError,
+  } = $backofficeApi.useQuery('get', '/api/Employees', {
+    params: {
+      query: {
+        pageNo: 1,
+        pageSize: 500,
+      },
+    },
+  });
+  
   const handleFetchPdf = async (id?: string | null): Promise<void> => {
     setLoadingPdf(true);
     try {
@@ -133,16 +147,11 @@ const EmployeeReportScreen = () => {
               <Select
                 label="Select Report"
                 placeholder="Pick report"
-                data={[
-                  {
-                    value: '78718dc1-0ca9-4d86-acee-e23dc73d050b',
-                    label: 'เด็กน้อย',
-                  },
-                  {
-                    value: '094e8589-9e5d-4af1-a824-3b4415af9967',
-                    label: 'แมน',
-                  },
-                ]}
+                data={getComboboxData(
+                  employees?.contents ?? [],
+                  'id',
+                  'firstName',
+                )}
                 defaultValue={reportId}
                 clearable
                 onChange={(data) => {
@@ -184,3 +193,4 @@ const EmployeeReportScreen = () => {
 };
 
 export { EmployeeReportScreen };
+

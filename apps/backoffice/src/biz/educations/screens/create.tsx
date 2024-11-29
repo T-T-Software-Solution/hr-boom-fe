@@ -1,7 +1,7 @@
 'use client';
 
-import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -12,11 +12,12 @@ import {
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
-import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
+import { getComboboxData } from '@tt-ss-hr/shared-utils';
 import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { EducationForm } from '../components/form';
 import { educationFormDefaultValues } from '../constants';
 import { EducationFormProvider, useEducationForm } from '../context';
@@ -24,18 +25,17 @@ import {
   type EducationForm as EducationFormType,
   educationCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { Employee } from '@backoffice/biz/employees/types';
 
-import type { EducationLevel } from '@backoffice/biz/education-levels/types';
 
 interface EducationCreateScreenProps {
   modalId?: string;
+  id?: string;
 }
 
 export const EducationCreateScreen: React.FC<EducationCreateScreenProps> = ({
   modalId,
+  id
 }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -108,7 +108,7 @@ export const EducationCreateScreen: React.FC<EducationCreateScreenProps> = ({
               : undefined,
           dateGraduation:
             parsedValue?.dateGraduation &&
-            dayjs(parsedValue?.dateGraduation).isValid()
+              dayjs(parsedValue?.dateGraduation).isValid()
               ? dayjs(parsedValue?.dateGraduation).toISOString()
               : undefined,
           faculty: parsedValue?.faculty || '',
@@ -122,6 +122,16 @@ export const EducationCreateScreen: React.FC<EducationCreateScreenProps> = ({
       });
     }
   };
+
+  useEffect(
+    function feedDataToForm() {
+      if (employees && !isEmployeesLoading && id) {
+        formHandler.setFieldValue('employeeId', id)
+        formHandler.resetDirty();
+      }
+    },
+    [employees, isEmployeesLoading],
+  );
 
   const isEventLoading = isCreateEducationLoading;
   const isScreenLoading = isEmployeesLoading || isEducationLevelsLoading;

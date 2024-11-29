@@ -2,6 +2,7 @@
 
 import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -13,10 +14,10 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { DocumentFileForm } from '../components/form';
 import { documentFileFormDefaultValues } from '../constants';
 import { DocumentFileFormProvider, useDocumentFileForm } from '../context';
@@ -24,17 +25,16 @@ import {
   type DocumentFileForm as DocumentFileFormType,
   documentFileCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { Employee } from '@backoffice/biz/employees/types';
 
 interface DocumentFileCreateScreenProps {
   modalId?: string;
+  id?: string;
 }
 
 export const DocumentFileCreateScreen: React.FC<
   DocumentFileCreateScreenProps
-> = ({ modalId }) => {
+> = ({ modalId, id }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const formHandler = useDocumentFileForm({
@@ -104,6 +104,16 @@ export const DocumentFileCreateScreen: React.FC<
       });
     }
   };
+
+  useEffect(
+    function feedDataToForm() {
+      if (employees && !isEmployeesLoading && id) {
+        formHandler.setFieldValue('employeeId', id)
+        formHandler.resetDirty();
+      }
+    },
+    [employees, isEmployeesLoading],
+  );
 
   const isEventLoading = isCreateDocumentFileLoading;
   const isScreenLoading = isEmployeesLoading;

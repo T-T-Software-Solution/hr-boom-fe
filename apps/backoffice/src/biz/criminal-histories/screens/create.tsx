@@ -1,7 +1,7 @@
 'use client';
 
-import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -12,11 +12,12 @@ import {
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
-import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
+import { getComboboxData } from '@tt-ss-hr/shared-utils';
 import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { CriminalHistoryForm } from '../components/form';
 import { criminalHistoryFormDefaultValues } from '../constants';
 import {
@@ -27,17 +28,16 @@ import {
   type CriminalHistoryForm as CriminalHistoryFormType,
   criminalHistoryCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { Employee } from '@backoffice/biz/employees/types';
 
 interface CriminalHistoryCreateScreenProps {
   modalId?: string;
+  id?: string;
 }
 
 export const CriminalHistoryCreateScreen: React.FC<
   CriminalHistoryCreateScreenProps
-> = ({ modalId }) => {
+> = ({ modalId, id }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const formHandler = useCriminalHistoryForm({
@@ -95,7 +95,7 @@ export const CriminalHistoryCreateScreen: React.FC<
           employeeId: parsedValue?.employeeId || '',
           dateOfPunishment:
             parsedValue?.dateOfPunishment &&
-            dayjs(parsedValue?.dateOfPunishment).isValid()
+              dayjs(parsedValue?.dateOfPunishment).isValid()
               ? dayjs(parsedValue?.dateOfPunishment).toISOString()
               : undefined,
           listPunishment: parsedValue?.listPunishment || '',
@@ -109,6 +109,16 @@ export const CriminalHistoryCreateScreen: React.FC<
       });
     }
   };
+
+  useEffect(
+    function feedDataToForm() {
+      if (employees && !isEmployeesLoading && id) {
+        formHandler.setFieldValue('employeeId', id)
+        formHandler.resetDirty();
+      }
+    },
+    [employees, isEmployeesLoading],
+  );
 
   const isEventLoading = isCreateCriminalHistoryLoading;
   const isScreenLoading = isEmployeesLoading;

@@ -117,12 +117,6 @@ export const adminMenu: SidebarMenuItem[] = [
     initiallyOpened: false,
     childrens: [
       { label: 'รายการบุคลากร', link: '/employee' },
-      { label: 'การจ้างงาน', link: '/employment' },
-      { label: 'ประวัติการศึกษา', link: '/education' },
-      { label: 'ใบอนุญาตประกอบวิชาชีพ', link: '/professional-license' },
-      { label: 'ประวัติการฝึกอบรม', link: '/training-history' },
-      { label: 'ประวัติการได้รับโทษทางวินัยและการนิรโทษกรรม', link: '/criminal-history' },
-      { label: 'เอกสารอื่นๆ', link: '/document-file' },
       { label: 'รายงาน', link: '/employee/report' },
     ],
   },

@@ -136,8 +136,7 @@ export const PositionStructureForm: React.FC<PositionStructureFormProps> = ({
               data={dropdowns.positionStructures}
               key={key('parentId')}
               {...getInputProps('parentId')}
-              clearable
-              searchable
+              disabled
               nothingFoundMessage="ไม่พบข้อมูล"
             />{' '}
           </Grid.Col>

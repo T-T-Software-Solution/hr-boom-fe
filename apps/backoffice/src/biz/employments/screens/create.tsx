@@ -1,7 +1,7 @@
 'use client';
 
-import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -12,11 +12,12 @@ import {
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
-import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
+import { getComboboxData } from '@tt-ss-hr/shared-utils';
 import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { EmploymentForm } from '../components/form';
 import { employmentFormDefaultValues } from '../constants';
 import { EmploymentFormProvider, useEmploymentForm } from '../context';
@@ -24,34 +25,25 @@ import {
   type EmploymentForm as EmploymentFormType,
   employmentCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { Employee } from '@backoffice/biz/employees/types';
 
-import type { OrgStructure } from '@backoffice/biz/org-structures/types';
 
-import type { PositionStructure } from '@backoffice/biz/position-structures/types';
 
-import type { EmployeeType } from '@backoffice/biz/employee-types/types';
 
-import type { SocialSecurityType } from '@backoffice/biz/social-security-types/types';
 
-import type { TaxCondition } from '@backoffice/biz/tax-conditions/types';
 
-import type { TaxBracket } from '@backoffice/biz/tax-brackets/types';
 
-import type { PaymentChannel } from '@backoffice/biz/payment-channels/types';
 
-import type { Bank } from '@backoffice/biz/banks/types';
 
-import type { BankAccountType } from '@backoffice/biz/bank-account-types/types';
 
 interface EmploymentCreateScreenProps {
   modalId?: string;
+  id?: string;
 }
 
 export const EmploymentCreateScreen: React.FC<EmploymentCreateScreenProps> = ({
   modalId,
+  id
 }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -201,7 +193,7 @@ export const EmploymentCreateScreen: React.FC<EmploymentCreateScreenProps> = ({
           employeeId: parsedValue?.employeeId || '',
           employmentStartDate:
             parsedValue?.employmentStartDate &&
-            dayjs(parsedValue?.employmentStartDate).isValid()
+              dayjs(parsedValue?.employmentStartDate).isValid()
               ? dayjs(parsedValue?.employmentStartDate).toISOString()
               : undefined,
           yearsOfWork: Number(String(parsedValue?.yearsOfWork)),
@@ -234,6 +226,16 @@ export const EmploymentCreateScreen: React.FC<EmploymentCreateScreenProps> = ({
       });
     }
   };
+
+  useEffect(
+    function feedDataToForm() {
+      if (employees && !isEmployeesLoading && id) {
+        formHandler.setFieldValue('employeeId', id)
+        formHandler.resetDirty();
+      }
+    },
+    [employees, isEmployeesLoading],
+  );
 
   const isEventLoading = isCreateEmploymentLoading;
   const isScreenLoading =

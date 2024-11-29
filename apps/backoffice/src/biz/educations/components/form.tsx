@@ -66,9 +66,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
             data={dropdowns.employees}
             key={key('employeeId')}
             {...getInputProps('employeeId')}
-            withAsterisk
-            clearable
-            searchable
+            disabled
             nothingFoundMessage="ไม่พบข้อมูล"
           />{' '}
         </Grid.Col>
