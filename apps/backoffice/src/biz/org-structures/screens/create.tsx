@@ -113,9 +113,9 @@ export const OrgStructureCreateScreen: React.FC<
   const onHandleSubmit = async (values: OrgStructureFormType) => {
     try {
       const parsedValue = orgStructureCreateSchema.parse(values);
-      const logoComppanyPath = await uploadFileIfNeeded({
-        file: values?.logoComppanyPath ?? '',
-        previewFile: values?.previewLogoComppanyPath,
+      const logoCompanyPath = await uploadFileIfNeeded({
+        file: values?.logoCompanyPath ?? '',
+        previewFile: values?.originalLogoCompanyPath,
         uploadFile,
       });
       createOrgStructure({
@@ -136,7 +136,7 @@ export const OrgStructureCreateScreen: React.FC<
           phoneNumber: parsedValue?.phoneNumber || null,
           faxNumber: parsedValue?.faxNumber || null,
           emailCompany: parsedValue?.emailCompany || null,
-          logoComppanyPath: logoComppanyPath || null,
+          logoCompanyPath: logoCompanyPath || null,
           description: parsedValue?.description || null,
           parentId: parsedValue?.parentId || null,
         },

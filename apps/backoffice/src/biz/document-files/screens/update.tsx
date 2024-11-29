@@ -105,7 +105,7 @@ export const DocumentFileUpdateScreen: React.FC<
       const parsedValue = documentFileUpdateSchema.parse(values);
       const filePath = await uploadFileIfNeeded({
         file: values?.filePath ?? '',
-        previewFile: values?.previewFilePath,
+        previewFile: values?.originalFilePath,
         uploadFile,
       });
       updateDocumentFile({

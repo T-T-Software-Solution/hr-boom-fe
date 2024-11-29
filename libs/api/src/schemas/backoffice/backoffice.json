@@ -11195,7 +11195,7 @@
             "type": "string",
             "nullable": true
           },
-          "logoComppanyPath": {
+          "logoCompanyPath": {
             "type": "string",
             "nullable": true
           },
@@ -11388,7 +11388,7 @@
             "type": "string",
             "nullable": true
           },
-          "logoComppanyPath": {
+          "logoCompanyPath": {
             "type": "string",
             "nullable": true
           },
@@ -11476,7 +11476,7 @@
             "type": "string",
             "nullable": true
           },
-          "logoComppanyPath": {
+          "logoCompanyPath": {
             "type": "string",
             "nullable": true
           },

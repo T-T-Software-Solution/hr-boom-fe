@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const educationLevelCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อวุฒิการศึกษา is required' })
+    .string({ message: 'กรุณาระบุ ชื่อวุฒิการศึกษา' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อวุฒิการศึกษา ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const educationLevelCreateSchema = z.object({
 });
 
 export const educationLevelUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสวุฒิการศึกษา is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสวุฒิการศึกษา' }).nullish(),
   name: z
-    .string({ message: 'ชื่อวุฒิการศึกษา is required' })
+    .string({ message: 'กรุณาระบุ ชื่อวุฒิการศึกษา' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อวุฒิการศึกษา ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const educationLevelUpdateSchema = z.object({
 });
 
 export const educationLevelSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อวุฒิการศึกษา is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อวุฒิการศึกษา' }).nullish(),
 });
 
 export type EducationLevel =

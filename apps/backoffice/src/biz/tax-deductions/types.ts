@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const taxDeductionCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อรายการลดหย่อนภาษี is required' })
+    .string({ message: 'กรุณาระบุ ชื่อรายการลดหย่อนภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อรายการลดหย่อนภาษี ต้องไม่เป็นค่าว่าง',
@@ -11,10 +11,10 @@ export const taxDeductionCreateSchema = z.object({
   value: z
     .union([
       z
-        .number({ message: 'มูลค่าการลดหย่อนภาษี is required' })
+        .number({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' })
         .int()
         .min(0, { message: 'มูลค่าการลดหย่อนภาษี ต้องมีค่ามากกว่าหรือเท่ากับ 0' }),
-      z.string({ message: 'มูลค่าการลดหย่อนภาษี is required' }),
+      z.string({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'มูลค่าการลดหย่อนภาษี ต้องไม่เป็นค่าว่าง',
@@ -22,9 +22,9 @@ export const taxDeductionCreateSchema = z.object({
 });
 
 export const taxDeductionUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสลดหย่อนภาษี is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสลดหย่อนภาษี' }).nullish(),
   name: z
-    .string({ message: 'ชื่อรายการลดหย่อนภาษี is required' })
+    .string({ message: 'กรุณาระบุ ชื่อรายการลดหย่อนภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อรายการลดหย่อนภาษี ต้องไม่เป็นค่าว่าง',
@@ -32,10 +32,10 @@ export const taxDeductionUpdateSchema = z.object({
   value: z
     .union([
       z
-        .number({ message: 'มูลค่าการลดหย่อนภาษี is required' })
+        .number({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' })
         .int()
         .min(0, { message: 'มูลค่าการลดหย่อนภาษี ต้องมีค่ามากกว่าหรือเท่ากับ 0' }),
-      z.string({ message: 'มูลค่าการลดหย่อนภาษี is required' }),
+      z.string({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'มูลค่าการลดหย่อนภาษี ต้องไม่เป็นค่าว่าง',
@@ -43,11 +43,11 @@ export const taxDeductionUpdateSchema = z.object({
 });
 
 export const taxDeductionSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อรายการลดหย่อนภาษี is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อรายการลดหย่อนภาษี' }).nullish(),
   value: z
     .union([
-      z.number({ message: 'มูลค่าการลดหย่อนภาษี is required' }).int(),
-      z.string({ message: 'มูลค่าการลดหย่อนภาษี is required' }),
+      z.number({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' }).int(),
+      z.string({ message: 'กรุณาระบุ มูลค่าการลดหย่อนภาษี' }),
     ])
     .nullish(),
 });

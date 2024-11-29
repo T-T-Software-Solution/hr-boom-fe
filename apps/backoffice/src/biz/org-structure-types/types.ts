@@ -3,13 +3,13 @@ import z from 'zod';
 
 export const orgStructureTypeCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อชนิดขององค์กร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อชนิดขององค์กร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดขององค์กร ต้องไม่เป็นค่าว่าง',
     }),
   code: z
-    .string({ message: 'โค้ดของชนิดองค์กร is required' })
+    .string({ message: 'กรุณาระบุ โค้ดของชนิดองค์กร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'โค้ดของชนิดองค์กร ต้องไม่เป็นค่าว่าง',
@@ -17,15 +17,15 @@ export const orgStructureTypeCreateSchema = z.object({
 });
 
 export const orgStructureTypeUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสชนิดขององค์กร is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสชนิดขององค์กร' }).nullish(),
   name: z
-    .string({ message: 'ชื่อชนิดขององค์กร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อชนิดขององค์กร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อชนิดขององค์กร ต้องไม่เป็นค่าว่าง',
     }),
   code: z
-    .string({ message: 'โค้ดของชนิดองค์กร is required' })
+    .string({ message: 'กรุณาระบุ โค้ดของชนิดองค์กร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'โค้ดของชนิดองค์กร ต้องไม่เป็นค่าว่าง',
@@ -33,8 +33,8 @@ export const orgStructureTypeUpdateSchema = z.object({
 });
 
 export const orgStructureTypeSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อชนิดขององค์กร is required' }).nullish(),
-  code: z.string({ message: 'โค้ดของชนิดองค์กร is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อชนิดขององค์กร' }).nullish(),
+  code: z.string({ message: 'กรุณาระบุ โค้ดของชนิดองค์กร' }).nullish(),
 });
 
 export type OrgStructureType =

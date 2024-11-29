@@ -154,7 +154,7 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
       const parsedValue = employeeUpdateSchema.parse(values);
       const imagePath = await uploadFileIfNeeded({
         file: values?.imagePath ?? '',
-        previewFile: values?.previewImagePath,
+        previewFile: values?.originalImagePath,
         uploadFile,
       });
       updateEmployee({
@@ -165,7 +165,7 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
         },
         body: {
           id: parsedValue?.id || '',
-          imagePath: imagePath || '',
+          imagePath: imagePath || null,
           employeeId: parsedValue?.employeeId || '',
           genderId: parsedValue?.genderId || '',
           prefixId: parsedValue?.prefixId || '',
@@ -196,13 +196,13 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
           passportNumber: parsedValue?.passportNumber || '',
           telephone: parsedValue?.telephone || '',
           email: parsedValue?.email || '',
-          lineId: parsedValue?.lineId || '',
-          fatherFullName: parsedValue?.fatherFullName || '',
-          motherFullName: parsedValue?.motherFullName || '',
-          motherMaidenName: parsedValue?.motherMaidenName || '',
+          lineId: parsedValue?.lineId || null,
+          fatherFullName: parsedValue?.fatherFullName || null,
+          motherFullName: parsedValue?.motherFullName || null,
+          motherMaidenName: parsedValue?.motherMaidenName || null,
           maritalStatus: parsedValue?.maritalStatus || false,
-          spouseFullName: parsedValue?.spouseFullName || '',
-          spouseMaidenName: parsedValue?.spouseMaidenName || '',
+          spouseFullName: parsedValue?.spouseFullName || null,
+          spouseMaidenName: parsedValue?.spouseMaidenName || null,
           contactPersonName: parsedValue?.contactPersonName || '',
           contactPersonTel: parsedValue?.contactPersonTel || '',
           currentHouseNumber: parsedValue?.currentHouseNumber || '',
@@ -223,7 +223,7 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
           permanentDistrict: parsedValue?.permanentDistrict || '',
           permanentProvinceId: parsedValue?.permanentProvinceId || '',
           permanentPostcode: Number(String(parsedValue?.permanentPostcode)),
-          note: parsedValue?.note || '',
+          note: parsedValue?.note || null,
         },
       });
     } catch (error: unknown) {
@@ -240,9 +240,9 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
         const imagePath = getFileUrl(employee.imagePath);
         formHandler.setValues({
           id: employee?.id ?? '',
-          imagePath: imagePath?.fileName ?? '',
-          previewImagePath: imagePath?.fullPath ?? '',
-          originalImagePath: imagePath?.originalFileName ?? '',
+          imagePath: imagePath?.fileName ?? null,
+          previewImagePath: imagePath?.fullPath ?? null,
+          originalImagePath: imagePath?.originalFileName ?? null,
           employeeId: employee?.employeeId ?? '',
           genderId: employee?.gender?.id ?? '',
           prefixId: employee?.prefix?.id ?? '',
@@ -271,13 +271,13 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
           passportNumber: employee?.passportNumber ?? '',
           telephone: employee?.telephone ?? '',
           email: employee?.email ?? '',
-          lineId: employee?.lineId ?? '',
-          fatherFullName: employee?.fatherFullName ?? '',
-          motherFullName: employee?.motherFullName ?? '',
-          motherMaidenName: employee?.motherMaidenName ?? '',
+          lineId: employee?.lineId ?? null,
+          fatherFullName: employee?.fatherFullName ?? null,
+          motherFullName: employee?.motherFullName ?? null,
+          motherMaidenName: employee?.motherMaidenName ?? null,
           maritalStatus: employee?.maritalStatus ?? false,
-          spouseFullName: employee?.spouseFullName ?? '',
-          spouseMaidenName: employee?.spouseMaidenName ?? '',
+          spouseFullName: employee?.spouseFullName ?? null,
+          spouseMaidenName: employee?.spouseMaidenName ?? null,
           contactPersonName: employee?.contactPersonName ?? '',
           contactPersonTel: employee?.contactPersonTel ?? '',
           currentHouseNumber: employee?.currentHouseNumber ?? '',
@@ -298,7 +298,7 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
           permanentDistrict: employee?.permanentDistrict ?? '',
           permanentProvinceId: employee?.permanentProvince?.id ?? '',
           permanentPostcode: Number(String(employee?.permanentPostcode)),
-          note: employee?.note ?? '',
+          note: employee?.note ?? null,
         });
         formHandler.resetDirty();
       }

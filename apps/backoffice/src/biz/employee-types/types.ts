@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const employeeTypeCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อประเภทพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อประเภทพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อประเภทพนักงาน ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const employeeTypeCreateSchema = z.object({
 });
 
 export const employeeTypeUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสประเภทพนักงาน is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสประเภทพนักงาน' }).nullish(),
   name: z
-    .string({ message: 'ชื่อประเภทพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อประเภทพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อประเภทพนักงาน ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const employeeTypeUpdateSchema = z.object({
 });
 
 export const employeeTypeSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อประเภทพนักงาน is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อประเภทพนักงาน' }).nullish(),
 });
 
 export type EmployeeType = backofficeComponents['schemas']['EmployeeTypeVm'];

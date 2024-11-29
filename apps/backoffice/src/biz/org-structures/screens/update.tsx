@@ -2,7 +2,6 @@
 
 import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
-import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -18,6 +17,7 @@ import {
   getFileUrl,
   uploadFileIfNeeded,
 } from '@tt-ss-hr/shared-utils';
+import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import type React from 'react';
 import { useEffect } from 'react';
@@ -28,10 +28,15 @@ import {
   type OrgStructureForm as OrgStructureFormType,
   orgStructureUpdateSchema,
 } from '../types';
+import { getErrorMessage } from '@backoffice/utils/error';
 
+import type { OrgStructureType } from '@backoffice/biz/org-structure-types/types';
 
+import type { SocialSecurityType } from '@backoffice/biz/social-security-types/types';
 
+import type { Province } from '@backoffice/biz/provinces/types';
 
+import type { OrgStructure } from '@backoffice/biz/org-structures/types';
 
 interface OrgStructureUpdateScreenProps {
   modalId?: string;
@@ -134,9 +139,9 @@ export const OrgStructureUpdateScreen: React.FC<
   const onHandleSubmit = async (values: OrgStructureFormType) => {
     try {
       const parsedValue = orgStructureUpdateSchema.parse(values);
-      const logoComppanyPath = await uploadFileIfNeeded({
-        file: values?.logoComppanyPath ?? '',
-        previewFile: values?.previewLogoComppanyPath,
+      const logoCompanyPath = await uploadFileIfNeeded({
+        file: values?.logoCompanyPath ?? '',
+        previewFile: values?.originalLogoCompanyPath,
         uploadFile,
       });
       updateOrgStructure({
@@ -150,7 +155,7 @@ export const OrgStructureUpdateScreen: React.FC<
           orgStructureTypeId: parsedValue?.orgStructureTypeId || '',
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
-          nameEn: parsedValue?.nameEn || '',
+          nameEn: parsedValue?.nameEn || null,
           taxId: parsedValue?.taxId || null,
           taxId2: parsedValue?.taxId2 || null,
           socialSecurityTypeId: parsedValue?.socialSecurityTypeId || null,
@@ -159,11 +164,11 @@ export const OrgStructureUpdateScreen: React.FC<
           provinceId: parsedValue?.provinceId || null,
           district: parsedValue?.district || null,
           subdistrict: parsedValue?.subdistrict || null,
-          postalCode: Number(String(parsedValue?.postalCode)) || null,
+          postalCode: Number(String(parsedValue?.postalCode)),
           phoneNumber: parsedValue?.phoneNumber || null,
           faxNumber: parsedValue?.faxNumber || null,
           emailCompany: parsedValue?.emailCompany || null,
-          logoComppanyPath: logoComppanyPath || null,
+          logoCompanyPath: logoCompanyPath || null,
           description: parsedValue?.description || null,
           parentId: parsedValue?.parentId || null,
         },
@@ -179,30 +184,30 @@ export const OrgStructureUpdateScreen: React.FC<
   useEffect(
     function feedDataToForm() {
       if (orgStructure && !isOrgStructureLoading) {
-        const logoComppanyPath = getFileUrl(orgStructure.logoComppanyPath);
+        const logoCompanyPath = getFileUrl(orgStructure.logoCompanyPath);
         formHandler.setValues({
           id: orgStructure?.id ?? '',
           orgStructureTypeId: orgStructure?.orgStructureType?.id ?? '',
           code: orgStructure?.code ?? '',
           name: orgStructure?.name ?? '',
-          nameEn: orgStructure?.nameEn ?? '',
-          taxId: orgStructure?.taxId ?? '',
-          taxId2: orgStructure?.taxId2 ?? '',
-          socialSecurityTypeId: orgStructure?.socialSecurityType?.id ?? '',
-          addressTh: orgStructure?.addressTh ?? '',
-          addressEn: orgStructure?.addressEn ?? '',
-          provinceId: orgStructure?.province?.id ?? '',
-          district: orgStructure?.district ?? '',
-          subdistrict: orgStructure?.subdistrict ?? '',
+          nameEn: orgStructure?.nameEn ?? null,
+          taxId: orgStructure?.taxId ?? null,
+          taxId2: orgStructure?.taxId2 ?? null,
+          socialSecurityTypeId: orgStructure?.socialSecurityType?.id ?? null,
+          addressTh: orgStructure?.addressTh ?? null,
+          addressEn: orgStructure?.addressEn ?? null,
+          provinceId: orgStructure?.province?.id ?? null,
+          district: orgStructure?.district ?? null,
+          subdistrict: orgStructure?.subdistrict ?? null,
           postalCode: Number(String(orgStructure?.postalCode)),
-          phoneNumber: orgStructure?.phoneNumber ?? '',
-          faxNumber: orgStructure?.faxNumber ?? '',
-          emailCompany: orgStructure?.emailCompany ?? '',
-          logoComppanyPath: logoComppanyPath?.fileName ?? '',
-          previewLogoComppanyPath: logoComppanyPath?.fullPath ?? '',
-          originalLogoComppanyPath: logoComppanyPath?.originalFileName ?? '',
-          description: orgStructure?.description ?? '',
-          parentId: orgStructure?.parent?.id ?? '',
+          phoneNumber: orgStructure?.phoneNumber ?? null,
+          faxNumber: orgStructure?.faxNumber ?? null,
+          emailCompany: orgStructure?.emailCompany ?? null,
+          logoCompanyPath: logoCompanyPath?.fileName ?? null,
+          previewLogoCompanyPath: logoCompanyPath?.fullPath ?? null,
+          originalLogoCompanyPath: logoCompanyPath?.originalFileName ?? null,
+          description: orgStructure?.description ?? null,
+          parentId: orgStructure?.parent?.id ?? null,
         });
         formHandler.resetDirty();
       }

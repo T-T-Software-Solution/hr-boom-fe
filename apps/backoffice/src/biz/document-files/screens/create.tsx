@@ -86,7 +86,7 @@ export const DocumentFileCreateScreen: React.FC<
       const parsedValue = documentFileCreateSchema.parse(values);
       const filePath = await uploadFileIfNeeded({
         file: values?.filePath ?? '',
-        previewFile: values?.previewFilePath,
+        previewFile: values?.originalFilePath,
         uploadFile,
       });
       createDocumentFile({

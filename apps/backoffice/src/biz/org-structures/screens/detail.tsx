@@ -309,10 +309,10 @@ export const OrgStructureDetailScreen: React.FC<
                 >
                   <Image
                     src={
-                      getFileUrl(orgStructure?.logoComppanyPath)?.fullPath ||
+                      getFileUrl(orgStructure?.logoCompanyPath)?.fullPath ||
                       placeholderImage
                     }
-                    alt={orgStructure?.logoComppanyPath || ''}
+                    alt={orgStructure?.logoCompanyPath || ''}
                     h={200}
                     w="auto"
                     fit="contain"

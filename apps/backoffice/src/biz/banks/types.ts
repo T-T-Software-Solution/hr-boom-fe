@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const bankCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อธนาคาร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อธนาคาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อธนาคาร ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const bankCreateSchema = z.object({
 });
 
 export const bankUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสธนาคาร is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสธนาคาร' }).nullish(),
   name: z
-    .string({ message: 'ชื่อธนาคาร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อธนาคาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อธนาคาร ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const bankUpdateSchema = z.object({
 });
 
 export const bankSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อธนาคาร is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อธนาคาร' }).nullish(),
 });
 
 export type Bank = backofficeComponents['schemas']['BankVm'];

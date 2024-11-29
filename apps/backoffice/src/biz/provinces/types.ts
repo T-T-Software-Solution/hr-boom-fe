@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const provinceCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อจังหวัด is required' })
+    .string({ message: 'กรุณาระบุ ชื่อจังหวัด' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อจังหวัด ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const provinceCreateSchema = z.object({
 });
 
 export const provinceUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสจังหวัด is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสจังหวัด' }).nullish(),
   name: z
-    .string({ message: 'ชื่อจังหวัด is required' })
+    .string({ message: 'กรุณาระบุ ชื่อจังหวัด' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อจังหวัด ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const provinceUpdateSchema = z.object({
 });
 
 export const provinceSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อจังหวัด is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อจังหวัด' }).nullish(),
 });
 
 export type Province = backofficeComponents['schemas']['ProvinceVm'];

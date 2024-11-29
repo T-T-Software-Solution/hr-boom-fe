@@ -3,14 +3,14 @@ import z from 'zod';
 
 export const documentFileCreateSchema = z.object({
   employeeId: z
-    .string({ message: 'ชื่อพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อพนักงาน ต้องไม่เป็นค่าว่าง',
     }),
   filePath: z
     .union([
-      z.string({ message: 'ไฟล์เอกสาร is required' }),
+      z.string({ message: 'กรุณาระบุ ไฟล์เอกสาร' }),
       z.instanceof(File),
       z.null(),
     ])
@@ -20,13 +20,13 @@ export const documentFileCreateSchema = z.object({
   previewFilePath: z.string().nullish(),
   originalFilePath: z.string().nullish(),
   fileType: z
-    .string({ message: 'ชื่อเอกสาร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเอกสาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเอกสาร ต้องไม่เป็นค่าว่าง',
     }),
   note: z
-    .string({ message: 'หมายเหตุเอกสาร is required' })
+    .string({ message: 'กรุณาระบุ หมายเหตุเอกสาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมายเหตุเอกสาร ต้องไม่เป็นค่าว่าง',
@@ -34,16 +34,16 @@ export const documentFileCreateSchema = z.object({
 });
 
 export const documentFileUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสของเอกสารอื่นๆ is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสของเอกสารอื่นๆ' }).nullish(),
   employeeId: z
-    .string({ message: 'ชื่อพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อพนักงาน ต้องไม่เป็นค่าว่าง',
     }),
   filePath: z
     .union([
-      z.string({ message: 'ไฟล์เอกสาร is required' }),
+      z.string({ message: 'กรุณาระบุ ไฟล์เอกสาร' }),
       z.instanceof(File),
       z.null(),
     ])
@@ -53,13 +53,13 @@ export const documentFileUpdateSchema = z.object({
   previewFilePath: z.string().nullish(),
   originalFilePath: z.string().nullish(),
   fileType: z
-    .string({ message: 'ชื่อเอกสาร is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเอกสาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเอกสาร ต้องไม่เป็นค่าว่าง',
     }),
   note: z
-    .string({ message: 'หมายเหตุเอกสาร is required' })
+    .string({ message: 'กรุณาระบุ หมายเหตุเอกสาร' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมายเหตุเอกสาร ต้องไม่เป็นค่าว่าง',
@@ -67,7 +67,7 @@ export const documentFileUpdateSchema = z.object({
 });
 
 export const documentFileSearchSchema = z.object({
-  employeeId: z.string({ message: 'ชื่อพนักงาน is required' }).nullish(),
+  employeeId: z.string({ message: 'กรุณาระบุ ชื่อพนักงาน' }).nullish(),
 });
 
 export type DocumentFile = backofficeComponents['schemas']['DocumentFileVm'];

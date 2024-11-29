@@ -153,12 +153,12 @@ export const PositionStructureUpdateScreen: React.FC<
             positionStructure?.positionStructureType?.id ?? '',
           code: positionStructure?.code ?? '',
           name: positionStructure?.name ?? '',
-          nameEn: positionStructure?.nameEn ?? '',
-          level: positionStructure?.level ?? '',
+          nameEn: positionStructure?.nameEn ?? null,
+          level: positionStructure?.level ?? null,
           salary: Number.parseFloat(String(positionStructure?.salary)),
-          description: positionStructure?.description ?? '',
-          descriptionEn: positionStructure?.descriptionEn ?? '',
-          parentId: positionStructure?.parent?.id ?? '',
+          description: positionStructure?.description ?? null,
+          descriptionEn: positionStructure?.descriptionEn ?? null,
+          parentId: positionStructure?.parent?.id ?? null,
         });
         formHandler.resetDirty();
       }

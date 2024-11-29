@@ -7810,7 +7810,7 @@ export interface components {
       phoneNumber?: string | null;
       faxNumber?: string | null;
       emailCompany?: string | null;
-      logoComppanyPath?: string | null;
+      logoCompanyPath?: string | null;
       description?: string | null;
       parent?: components['schemas']['OrgStructureVm'];
     };
@@ -7860,7 +7860,7 @@ export interface components {
       phoneNumber?: string | null;
       faxNumber?: string | null;
       emailCompany?: string | null;
-      logoComppanyPath?: string | null;
+      logoCompanyPath?: string | null;
       description?: string | null;
       parentId?: string | null;
     };
@@ -7883,7 +7883,7 @@ export interface components {
       phoneNumber?: string | null;
       faxNumber?: string | null;
       emailCompany?: string | null;
-      logoComppanyPath?: string | null;
+      logoCompanyPath?: string | null;
       description?: string | null;
       parentId?: string | null;
     };

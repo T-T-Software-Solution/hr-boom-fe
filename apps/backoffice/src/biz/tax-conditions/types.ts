@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const taxConditionCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อเงื่อนไขการหักภาษี is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเงื่อนไขการหักภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเงื่อนไขการหักภาษี ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const taxConditionCreateSchema = z.object({
 });
 
 export const taxConditionUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสเงื่อนไขการหักภาษี is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสเงื่อนไขการหักภาษี' }).nullish(),
   name: z
-    .string({ message: 'ชื่อเงื่อนไขการหักภาษี is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเงื่อนไขการหักภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเงื่อนไขการหักภาษี ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const taxConditionUpdateSchema = z.object({
 });
 
 export const taxConditionSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อเงื่อนไขการหักภาษี is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อเงื่อนไขการหักภาษี' }).nullish(),
 });
 
 export type TaxCondition = backofficeComponents['schemas']['TaxConditionVm'];

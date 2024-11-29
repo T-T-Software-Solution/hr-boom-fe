@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const taxBracketCreateSchema = z.object({
   name: z
-    .string({ message: 'อัตราภาษี is required' })
+    .string({ message: 'กรุณาระบุ อัตราภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อัตราภาษี ต้องไม่เป็นค่าว่าง',
@@ -11,10 +11,10 @@ export const taxBracketCreateSchema = z.object({
   maxIncome: z
     .union([
       z
-        .number({ message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น is required' })
+        .number({ message: 'กรุณาระบุ รายได้สูงสุดที่อยู่ในระดับภาษีนั้น' })
         .int()
         .min(0, { message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น ต้องมีค่ามากกว่าหรือเท่ากับ 0' }),
-      z.string({ message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น is required' }),
+      z.string({ message: 'กรุณาระบุ รายได้สูงสุดที่อยู่ในระดับภาษีนั้น' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น ต้องไม่เป็นค่าว่าง',
@@ -22,9 +22,9 @@ export const taxBracketCreateSchema = z.object({
 });
 
 export const taxBracketUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสระดับภาษี is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสระดับภาษี' }).nullish(),
   name: z
-    .string({ message: 'อัตราภาษี is required' })
+    .string({ message: 'กรุณาระบุ อัตราภาษี' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อัตราภาษี ต้องไม่เป็นค่าว่าง',
@@ -32,10 +32,10 @@ export const taxBracketUpdateSchema = z.object({
   maxIncome: z
     .union([
       z
-        .number({ message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น is required' })
+        .number({ message: 'กรุณาระบุ รายได้สูงสุดที่อยู่ในระดับภาษีนั้น' })
         .int()
         .min(0, { message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น ต้องมีค่ามากกว่าหรือเท่ากับ 0' }),
-      z.string({ message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น is required' }),
+      z.string({ message: 'กรุณาระบุ รายได้สูงสุดที่อยู่ในระดับภาษีนั้น' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รายได้สูงสุดที่อยู่ในระดับภาษีนั้น ต้องไม่เป็นค่าว่าง',
@@ -43,7 +43,7 @@ export const taxBracketUpdateSchema = z.object({
 });
 
 export const taxBracketSearchSchema = z.object({
-  name: z.string({ message: 'อัตราภาษี is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ อัตราภาษี' }).nullish(),
 });
 
 export type TaxBracket = backofficeComponents['schemas']['TaxBracketVm'];

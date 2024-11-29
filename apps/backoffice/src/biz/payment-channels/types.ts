@@ -3,7 +3,7 @@ import z from 'zod';
 
 export const paymentChannelCreateSchema = z.object({
   name: z
-    .string({ message: 'ชื่อช่องทางจ่ายเงินเดือน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อช่องทางจ่ายเงินเดือน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อช่องทางจ่ายเงินเดือน ต้องไม่เป็นค่าว่าง',
@@ -11,9 +11,9 @@ export const paymentChannelCreateSchema = z.object({
 });
 
 export const paymentChannelUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสช่องทางจ่ายเงินเดือน is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสช่องทางจ่ายเงินเดือน' }).nullish(),
   name: z
-    .string({ message: 'ชื่อช่องทางจ่ายเงินเดือน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อช่องทางจ่ายเงินเดือน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อช่องทางจ่ายเงินเดือน ต้องไม่เป็นค่าว่าง',
@@ -21,7 +21,7 @@ export const paymentChannelUpdateSchema = z.object({
 });
 
 export const paymentChannelSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อช่องทางจ่ายเงินเดือน is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อช่องทางจ่ายเงินเดือน' }).nullish(),
 });
 
 export type PaymentChannel =

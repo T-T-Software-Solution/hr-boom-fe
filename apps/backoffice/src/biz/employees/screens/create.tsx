@@ -134,12 +134,12 @@ export const EmployeeCreateScreen: React.FC<EmployeeCreateScreenProps> = ({
       const parsedValue = employeeCreateSchema.parse(values);
       const imagePath = await uploadFileIfNeeded({
         file: values?.imagePath ?? '',
-        previewFile: values?.previewImagePath,
+        previewFile: values?.originalImagePath,
         uploadFile,
       });
       createEmployee({
         body: {
-          imagePath: imagePath || '',
+          imagePath: imagePath || null,
           employeeId: parsedValue?.employeeId || '',
           genderId: parsedValue?.genderId || '',
           prefixId: parsedValue?.prefixId || '',
@@ -170,13 +170,13 @@ export const EmployeeCreateScreen: React.FC<EmployeeCreateScreenProps> = ({
           passportNumber: parsedValue?.passportNumber || '',
           telephone: parsedValue?.telephone || '',
           email: parsedValue?.email || '',
-          lineId: parsedValue?.lineId || '',
-          fatherFullName: parsedValue?.fatherFullName || '',
-          motherFullName: parsedValue?.motherFullName || '',
-          motherMaidenName: parsedValue?.motherMaidenName || '',
+          lineId: parsedValue?.lineId || null,
+          fatherFullName: parsedValue?.fatherFullName || null,
+          motherFullName: parsedValue?.motherFullName || null,
+          motherMaidenName: parsedValue?.motherMaidenName || null,
           maritalStatus: parsedValue?.maritalStatus || false,
-          spouseFullName: parsedValue?.spouseFullName || '',
-          spouseMaidenName: parsedValue?.spouseMaidenName || '',
+          spouseFullName: parsedValue?.spouseFullName || null,
+          spouseMaidenName: parsedValue?.spouseMaidenName || null,
           contactPersonName: parsedValue?.contactPersonName || '',
           contactPersonTel: parsedValue?.contactPersonTel || '',
           currentHouseNumber: parsedValue?.currentHouseNumber || '',
@@ -197,7 +197,7 @@ export const EmployeeCreateScreen: React.FC<EmployeeCreateScreenProps> = ({
           permanentDistrict: parsedValue?.permanentDistrict || '',
           permanentProvinceId: parsedValue?.permanentProvinceId || '',
           permanentPostcode: Number(String(parsedValue?.permanentPostcode)),
-          note: parsedValue?.note || '',
+          note: parsedValue?.note || null,
         },
       });
     } catch (error: unknown) {

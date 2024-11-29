@@ -38,7 +38,7 @@ export const OrgStructureForm: React.FC<OrgStructureFormProps> = ({
   parentId
 }) => {
   const { getInputProps, key, getValues } = useOrgStructureFormContext();
-  const { logoComppanyPath, previewLogoComppanyPath } = getValues();
+  const { logoCompanyPath, previewLogoCompanyPath } = getValues();
 
   return (
     <Container p={rem(16)}>
@@ -238,11 +238,11 @@ export const OrgStructureForm: React.FC<OrgStructureFormProps> = ({
                   accept="image/png,image/jpeg,image/webp"
                   description="รองรับไฟล์ในรูปแบบ PNG, JPEG หรือ WEBP เท่านั้น"
                   valueComponent={FileDisplay}
-                  key={key('logoComppanyPath')}
-                  {...getInputProps('logoComppanyPath')}
+                  key={key('logoCompanyPath')}
+                  {...getInputProps('logoCompanyPath')}
                 />
                 <Group mt="md">
-                  {logoComppanyPath && (
+                  {logoCompanyPath && (
                     <Paper
                       shadow="xs"
                       p="0"
@@ -251,14 +251,14 @@ export const OrgStructureForm: React.FC<OrgStructureFormProps> = ({
                     >
                       <Image
                         src={
-                          logoComppanyPath instanceof File
-                            ? URL.createObjectURL(logoComppanyPath)
-                            : previewLogoComppanyPath
+                          logoCompanyPath instanceof File
+                            ? URL.createObjectURL(logoCompanyPath)
+                            : previewLogoCompanyPath
                         }
                         alt={
-                          logoComppanyPath instanceof File
-                            ? logoComppanyPath.name
-                            : logoComppanyPath
+                          logoCompanyPath instanceof File
+                            ? logoCompanyPath.name
+                            : logoCompanyPath
                         }
                         maw="100px"
                         mah="100px"

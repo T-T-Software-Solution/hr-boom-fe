@@ -3,528 +3,504 @@ import z from 'zod';
 
 export const employeeCreateSchema = z.object({
   imagePath: z
-    .union([
-      z.string({ message: 'รูป is required' }),
-      z.instanceof(File),
-      z.null(),
-    ])
+    .union([z.string({ message: 'กรุณาระบุ รูป' }), z.instanceof(File), z.null()])
     .nullable(),
   previewImagePath: z.string().nullish(),
   originalImagePath: z.string().nullish(),
   employeeId: z
-    .string({ message: 'รหัสพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ รหัสพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสพนักงาน ต้องไม่เป็นค่าว่าง',
     }),
   genderId: z
-    .string({ message: 'เพศ is required' })
+    .string({ message: 'กรุณาระบุ เพศ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'เพศ ต้องไม่เป็นค่าว่าง' }),
   prefixId: z
-    .string({ message: 'คำนำหน้าชื่อ is required' })
+    .string({ message: 'กรุณาระบุ คำนำหน้าชื่อ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'คำนำหน้าชื่อ ต้องไม่เป็นค่าว่าง',
     }),
   firstName: z
-    .string({ message: 'ชื่อ is required' })
+    .string({ message: 'กรุณาระบุ ชื่อ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อ ต้องไม่เป็นค่าว่าง' }),
   lastName: z
-    .string({ message: 'นามสกุล is required' })
+    .string({ message: 'กรุณาระบุ นามสกุล' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'นามสกุล ต้องไม่เป็นค่าว่าง' }),
   nickname: z
-    .string({ message: 'ชื่อเล่น is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเล่น' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อเล่น ต้องไม่เป็นค่าว่าง' }),
   prefixEnId: z
-    .string({ message: 'คำนำหน้าชื่อ(EN) is required' })
+    .string({ message: 'กรุณาระบุ คำนำหน้าชื่อ(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'คำนำหน้าชื่อ(EN) ต้องไม่เป็นค่าว่าง',
     }),
   firstNameEn: z
-    .string({ message: 'ชื่อ(EN) is required' })
+    .string({ message: 'กรุณาระบุ ชื่อ(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อ(EN) ต้องไม่เป็นค่าว่าง' }),
   lastNameEn: z
-    .string({ message: 'นามสกุล(EN) is required' })
+    .string({ message: 'กรุณาระบุ นามสกุล(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'นามสกุล(EN) ต้องไม่เป็นค่าว่าง',
     }),
   nicknameEn: z
-    .string({ message: 'ชื่อเล่น(EN) is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเล่น(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเล่น(EN) ต้องไม่เป็นค่าว่าง',
     }),
   orgStructureId: z
-    .string({ message: 'ชื่อหน่วยงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อหน่วยงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อหน่วยงาน ต้องไม่เป็นค่าว่าง',
     }),
   dateOfBirth: z
     .union([
-      z.string({ message: 'วันเดือนปีเกิด is required' }),
-      z.date({ message: 'วันเดือนปีเกิด is required' }),
+      z.string({ message: 'กรุณาระบุ วันเดือนปีเกิด' }),
+      z.date({ message: 'กรุณาระบุ วันเดือนปีเกิด' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'วันเดือนปีเกิด ต้องไม่เป็นค่าว่าง',
     }),
   placementDate: z
     .union([
-      z.string({ message: 'วันบรรจุ is required' }),
-      z.date({ message: 'วันบรรจุ is required' }),
+      z.string({ message: 'กรุณาระบุ วันบรรจุ' }),
+      z.date({ message: 'กรุณาระบุ วันบรรจุ' }),
     ])
     .refine((v) => v !== null && v !== '', { message: 'วันบรรจุ ต้องไม่เป็นค่าว่าง' }),
   retirementDate: z
     .union([
-      z.string({ message: 'วันครบเกษียณอายุ is required' }),
-      z.date({ message: 'วันครบเกษียณอายุ is required' }),
+      z.string({ message: 'กรุณาระบุ วันครบเกษียณอายุ' }),
+      z.date({ message: 'กรุณาระบุ วันครบเกษียณอายุ' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'วันครบเกษียณอายุ ต้องไม่เป็นค่าว่าง',
     }),
   nationalId: z
-    .string({ message: 'เลขบัตรประชาชน is required' })
+    .string({ message: 'กรุณาระบุ เลขบัตรประชาชน' })
     .max(13, { message: 'เลขบัตรประชาชน ต้องมีค่าน้อยกว่าหรือเท่ากับ 13' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขบัตรประชาชน ต้องไม่เป็นค่าว่าง',
     }),
   passportNumber: z
-    .string({ message: 'เลขหนังสือเดินทาง is required' })
+    .string({ message: 'กรุณาระบุ เลขหนังสือเดินทาง' })
     .max(20, { message: 'เลขหนังสือเดินทาง ต้องมีค่าน้อยกว่าหรือเท่ากับ 20' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขหนังสือเดินทาง ต้องไม่เป็นค่าว่าง',
     }),
   telephone: z
-    .string({ message: 'เบอร์โทรศัพท์ is required' })
+    .string({ message: 'กรุณาระบุ เบอร์โทรศัพท์' })
     .max(10, { message: 'เบอร์โทรศัพท์ ต้องมีค่าน้อยกว่าหรือเท่ากับ 10' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เบอร์โทรศัพท์ ต้องไม่เป็นค่าว่าง',
     }),
   email: z
-    .string({ message: 'อีเมล is required' })
+    .string({ message: 'กรุณาระบุ อีเมล' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'อีเมล ต้องไม่เป็นค่าว่าง' }),
-  lineId: z.string({ message: 'ไลน์ไอดี is required' }).nullable(),
-  fatherFullName: z.string({ message: 'ชื่อ-นามสกุล บิดา is required' }).nullable(),
-  motherFullName: z
-    .string({ message: 'ชื่อ-นามสกุล มารดา is required' })
-    .nullable(),
-  motherMaidenName: z
-    .string({ message: 'นามสกุลเดิม มารดา is required' })
-    .nullable(),
-  maritalStatus: z.boolean({ message: 'แต่งงานแล้ว is required' }).nullable(),
-  spouseFullName: z
-    .string({ message: 'ชื่อ-นามสกุล คู่สมรส is required' })
-    .nullable(),
-  spouseMaidenName: z
-    .string({ message: 'นามสกุลเดิม คู่สมรส is required' })
-    .nullable(),
+  lineId: z.string({ message: 'กรุณาระบุ ไลน์ไอดี' }).nullable(),
+  fatherFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล บิดา' }).nullable(),
+  motherFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล มารดา' }).nullable(),
+  motherMaidenName: z.string({ message: 'กรุณาระบุ นามสกุลเดิม มารดา' }).nullable(),
+  maritalStatus: z.boolean({ message: 'กรุณาระบุ แต่งงานแล้ว' }).nullable(),
+  spouseFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล คู่สมรส' }).nullable(),
+  spouseMaidenName: z.string({ message: 'กรุณาระบุ นามสกุลเดิม คู่สมรส' }).nullable(),
   contactPersonName: z
-    .string({ message: 'ชื่อผู้ติดต่อฉุกเฉิน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อผู้ติดต่อฉุกเฉิน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อผู้ติดต่อฉุกเฉิน ต้องไม่เป็นค่าว่าง',
     }),
   contactPersonTel: z
-    .string({ message: 'เบอร์ผู้ติดต่อฉุกเฉิน is required' })
+    .string({ message: 'กรุณาระบุ เบอร์ผู้ติดต่อฉุกเฉิน' })
     .max(10, { message: 'เบอร์ผู้ติดต่อฉุกเฉิน ต้องมีค่าน้อยกว่าหรือเท่ากับ 10' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เบอร์ผู้ติดต่อฉุกเฉิน ต้องไม่เป็นค่าว่าง',
     }),
   currentHouseNumber: z
-    .string({ message: 'เลขที่บ้าน(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ เลขที่บ้าน(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขที่บ้าน(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentMoo: z
-    .string({ message: 'หมู่(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ หมู่(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมู่(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentSoi: z
-    .string({ message: 'ซอย(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ซอย(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ซอย(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currectYak: z
-    .string({ message: 'แยก(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ แยก(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'แยก(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentRoad: z
-    .string({ message: 'ถนน(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ถนน(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ถนน(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentSubdistrict: z
-    .string({ message: 'ตำบล(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ตำบล(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ตำบล(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentDistrict: z
-    .string({ message: 'อำเภอ(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ อำเภอ(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อำเภอ(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentProvinceId: z
-    .string({ message: 'จังหวัด(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ จังหวัด(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'จังหวัด(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentPostcode: z
     .union([
-      z.number({ message: 'รหัสไปรษณีย์(ปัจจุบัน) is required' }).int(),
-      z.string({ message: 'รหัสไปรษณีย์(ปัจจุบัน) is required' }),
+      z.number({ message: 'กรุณาระบุ รหัสไปรษณีย์(ปัจจุบัน)' }).int(),
+      z.string({ message: 'กรุณาระบุ รหัสไปรษณีย์(ปัจจุบัน)' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสไปรษณีย์(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentHouseNumber: z
-    .string({ message: 'เลขที่บ้าน(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ เลขที่บ้าน(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขที่บ้าน(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentMoo: z
-    .string({ message: 'หมู่(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ หมู่(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมู่(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentSoi: z
-    .string({ message: 'ซอย(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ซอย(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ซอย(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentYak: z
-    .string({ message: 'แยก(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ แยก(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'แยก(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentRoad: z
-    .string({ message: 'ถนน(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ถนน(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ถนน(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentSubdistrict: z
-    .string({ message: 'ตำบล(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ตำบล(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ตำบล(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentDistrict: z
-    .string({ message: 'อำเภอ(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ อำเภอ(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อำเภอ(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentProvinceId: z
-    .string({ message: 'จังหวัด(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ จังหวัด(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'จังหวัด(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentPostcode: z
     .union([
-      z.number({ message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) is required' }).int(),
-      z.string({ message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) is required' }),
+      z.number({ message: 'กรุณาระบุ รหัสไปรษณีย์(ตามทะเบียนบ้าน)' }).int(),
+      z.string({ message: 'กรุณาระบุ รหัสไปรษณีย์(ตามทะเบียนบ้าน)' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
-  note: z.string({ message: 'หมายเหตุ is required' }).nullable(),
+  note: z.string({ message: 'กรุณาระบุ หมายเหตุ' }).nullable(),
 });
 
 export const employeeUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสของข้อมูลบุคลากร is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสของข้อมูลบุคลากร' }).nullish(),
   imagePath: z
-    .union([
-      z.string({ message: 'รูป is required' }),
-      z.instanceof(File),
-      z.null(),
-    ])
+    .union([z.string({ message: 'กรุณาระบุ รูป' }), z.instanceof(File), z.null()])
     .nullable(),
   previewImagePath: z.string().nullish(),
   originalImagePath: z.string().nullish(),
   employeeId: z
-    .string({ message: 'รหัสพนักงาน is required' })
+    .string({ message: 'กรุณาระบุ รหัสพนักงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสพนักงาน ต้องไม่เป็นค่าว่าง',
     }),
   genderId: z
-    .string({ message: 'เพศ is required' })
+    .string({ message: 'กรุณาระบุ เพศ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'เพศ ต้องไม่เป็นค่าว่าง' }),
   prefixId: z
-    .string({ message: 'คำนำหน้าชื่อ is required' })
+    .string({ message: 'กรุณาระบุ คำนำหน้าชื่อ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'คำนำหน้าชื่อ ต้องไม่เป็นค่าว่าง',
     }),
   firstName: z
-    .string({ message: 'ชื่อ is required' })
+    .string({ message: 'กรุณาระบุ ชื่อ' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อ ต้องไม่เป็นค่าว่าง' }),
   lastName: z
-    .string({ message: 'นามสกุล is required' })
+    .string({ message: 'กรุณาระบุ นามสกุล' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'นามสกุล ต้องไม่เป็นค่าว่าง' }),
   nickname: z
-    .string({ message: 'ชื่อเล่น is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเล่น' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อเล่น ต้องไม่เป็นค่าว่าง' }),
   prefixEnId: z
-    .string({ message: 'คำนำหน้าชื่อ(EN) is required' })
+    .string({ message: 'กรุณาระบุ คำนำหน้าชื่อ(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'คำนำหน้าชื่อ(EN) ต้องไม่เป็นค่าว่าง',
     }),
   firstNameEn: z
-    .string({ message: 'ชื่อ(EN) is required' })
+    .string({ message: 'กรุณาระบุ ชื่อ(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'ชื่อ(EN) ต้องไม่เป็นค่าว่าง' }),
   lastNameEn: z
-    .string({ message: 'นามสกุล(EN) is required' })
+    .string({ message: 'กรุณาระบุ นามสกุล(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'นามสกุล(EN) ต้องไม่เป็นค่าว่าง',
     }),
   nicknameEn: z
-    .string({ message: 'ชื่อเล่น(EN) is required' })
+    .string({ message: 'กรุณาระบุ ชื่อเล่น(EN)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อเล่น(EN) ต้องไม่เป็นค่าว่าง',
     }),
   orgStructureId: z
-    .string({ message: 'ชื่อหน่วยงาน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อหน่วยงาน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อหน่วยงาน ต้องไม่เป็นค่าว่าง',
     }),
   dateOfBirth: z
     .union([
-      z.string({ message: 'วันเดือนปีเกิด is required' }),
-      z.date({ message: 'วันเดือนปีเกิด is required' }),
+      z.string({ message: 'กรุณาระบุ วันเดือนปีเกิด' }),
+      z.date({ message: 'กรุณาระบุ วันเดือนปีเกิด' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'วันเดือนปีเกิด ต้องไม่เป็นค่าว่าง',
     }),
   placementDate: z
     .union([
-      z.string({ message: 'วันบรรจุ is required' }),
-      z.date({ message: 'วันบรรจุ is required' }),
+      z.string({ message: 'กรุณาระบุ วันบรรจุ' }),
+      z.date({ message: 'กรุณาระบุ วันบรรจุ' }),
     ])
     .refine((v) => v !== null && v !== '', { message: 'วันบรรจุ ต้องไม่เป็นค่าว่าง' }),
   retirementDate: z
     .union([
-      z.string({ message: 'วันครบเกษียณอายุ is required' }),
-      z.date({ message: 'วันครบเกษียณอายุ is required' }),
+      z.string({ message: 'กรุณาระบุ วันครบเกษียณอายุ' }),
+      z.date({ message: 'กรุณาระบุ วันครบเกษียณอายุ' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'วันครบเกษียณอายุ ต้องไม่เป็นค่าว่าง',
     }),
   nationalId: z
-    .string({ message: 'เลขบัตรประชาชน is required' })
+    .string({ message: 'กรุณาระบุ เลขบัตรประชาชน' })
     .max(13, { message: 'เลขบัตรประชาชน ต้องมีค่าน้อยกว่าหรือเท่ากับ 13' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขบัตรประชาชน ต้องไม่เป็นค่าว่าง',
     }),
   passportNumber: z
-    .string({ message: 'เลขหนังสือเดินทาง is required' })
+    .string({ message: 'กรุณาระบุ เลขหนังสือเดินทาง' })
     .max(20, { message: 'เลขหนังสือเดินทาง ต้องมีค่าน้อยกว่าหรือเท่ากับ 20' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขหนังสือเดินทาง ต้องไม่เป็นค่าว่าง',
     }),
   telephone: z
-    .string({ message: 'เบอร์โทรศัพท์ is required' })
+    .string({ message: 'กรุณาระบุ เบอร์โทรศัพท์' })
     .max(10, { message: 'เบอร์โทรศัพท์ ต้องมีค่าน้อยกว่าหรือเท่ากับ 10' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เบอร์โทรศัพท์ ต้องไม่เป็นค่าว่าง',
     }),
   email: z
-    .string({ message: 'อีเมล is required' })
+    .string({ message: 'กรุณาระบุ อีเมล' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', { message: 'อีเมล ต้องไม่เป็นค่าว่าง' }),
-  lineId: z.string({ message: 'ไลน์ไอดี is required' }).nullable(),
-  fatherFullName: z.string({ message: 'ชื่อ-นามสกุล บิดา is required' }).nullable(),
-  motherFullName: z
-    .string({ message: 'ชื่อ-นามสกุล มารดา is required' })
-    .nullable(),
-  motherMaidenName: z
-    .string({ message: 'นามสกุลเดิม มารดา is required' })
-    .nullable(),
-  maritalStatus: z.boolean({ message: 'แต่งงานแล้ว is required' }).nullable(),
-  spouseFullName: z
-    .string({ message: 'ชื่อ-นามสกุล คู่สมรส is required' })
-    .nullable(),
-  spouseMaidenName: z
-    .string({ message: 'นามสกุลเดิม คู่สมรส is required' })
-    .nullable(),
+  lineId: z.string({ message: 'กรุณาระบุ ไลน์ไอดี' }).nullable(),
+  fatherFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล บิดา' }).nullable(),
+  motherFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล มารดา' }).nullable(),
+  motherMaidenName: z.string({ message: 'กรุณาระบุ นามสกุลเดิม มารดา' }).nullable(),
+  maritalStatus: z.boolean({ message: 'กรุณาระบุ แต่งงานแล้ว' }).nullable(),
+  spouseFullName: z.string({ message: 'กรุณาระบุ ชื่อ-นามสกุล คู่สมรส' }).nullable(),
+  spouseMaidenName: z.string({ message: 'กรุณาระบุ นามสกุลเดิม คู่สมรส' }).nullable(),
   contactPersonName: z
-    .string({ message: 'ชื่อผู้ติดต่อฉุกเฉิน is required' })
+    .string({ message: 'กรุณาระบุ ชื่อผู้ติดต่อฉุกเฉิน' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อผู้ติดต่อฉุกเฉิน ต้องไม่เป็นค่าว่าง',
     }),
   contactPersonTel: z
-    .string({ message: 'เบอร์ผู้ติดต่อฉุกเฉิน is required' })
+    .string({ message: 'กรุณาระบุ เบอร์ผู้ติดต่อฉุกเฉิน' })
     .max(10, { message: 'เบอร์ผู้ติดต่อฉุกเฉิน ต้องมีค่าน้อยกว่าหรือเท่ากับ 10' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เบอร์ผู้ติดต่อฉุกเฉิน ต้องไม่เป็นค่าว่าง',
     }),
   currentHouseNumber: z
-    .string({ message: 'เลขที่บ้าน(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ เลขที่บ้าน(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขที่บ้าน(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentMoo: z
-    .string({ message: 'หมู่(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ หมู่(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมู่(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentSoi: z
-    .string({ message: 'ซอย(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ซอย(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ซอย(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currectYak: z
-    .string({ message: 'แยก(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ แยก(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'แยก(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentRoad: z
-    .string({ message: 'ถนน(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ถนน(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ถนน(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentSubdistrict: z
-    .string({ message: 'ตำบล(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ ตำบล(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ตำบล(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentDistrict: z
-    .string({ message: 'อำเภอ(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ อำเภอ(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อำเภอ(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentProvinceId: z
-    .string({ message: 'จังหวัด(ปัจจุบัน) is required' })
+    .string({ message: 'กรุณาระบุ จังหวัด(ปัจจุบัน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'จังหวัด(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   currentPostcode: z
     .union([
-      z.number({ message: 'รหัสไปรษณีย์(ปัจจุบัน) is required' }).int(),
-      z.string({ message: 'รหัสไปรษณีย์(ปัจจุบัน) is required' }),
+      z.number({ message: 'กรุณาระบุ รหัสไปรษณีย์(ปัจจุบัน)' }).int(),
+      z.string({ message: 'กรุณาระบุ รหัสไปรษณีย์(ปัจจุบัน)' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสไปรษณีย์(ปัจจุบัน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentHouseNumber: z
-    .string({ message: 'เลขที่บ้าน(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ เลขที่บ้าน(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'เลขที่บ้าน(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentMoo: z
-    .string({ message: 'หมู่(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ หมู่(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'หมู่(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentSoi: z
-    .string({ message: 'ซอย(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ซอย(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ซอย(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentYak: z
-    .string({ message: 'แยก(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ แยก(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'แยก(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentRoad: z
-    .string({ message: 'ถนน(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ถนน(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ถนน(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentSubdistrict: z
-    .string({ message: 'ตำบล(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ ตำบล(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ตำบล(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentDistrict: z
-    .string({ message: 'อำเภอ(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ อำเภอ(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'อำเภอ(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentProvinceId: z
-    .string({ message: 'จังหวัด(ตามทะเบียนบ้าน) is required' })
+    .string({ message: 'กรุณาระบุ จังหวัด(ตามทะเบียนบ้าน)' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'จังหวัด(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
   permanentPostcode: z
     .union([
-      z.number({ message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) is required' }).int(),
-      z.string({ message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) is required' }),
+      z.number({ message: 'กรุณาระบุ รหัสไปรษณีย์(ตามทะเบียนบ้าน)' }).int(),
+      z.string({ message: 'กรุณาระบุ รหัสไปรษณีย์(ตามทะเบียนบ้าน)' }),
     ])
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสไปรษณีย์(ตามทะเบียนบ้าน) ต้องไม่เป็นค่าว่าง',
     }),
-  note: z.string({ message: 'หมายเหตุ is required' }).nullable(),
+  note: z.string({ message: 'กรุณาระบุ หมายเหตุ' }).nullable(),
 });
 
 export const employeeSearchSchema = z.object({
-  employeeId: z.string({ message: 'รหัสพนักงาน is required' }).nullish(),
-  genderId: z.string({ message: 'เพศ is required' }).nullish(),
-  firstName: z.string({ message: 'ชื่อ is required' }).nullish(),
-  lastName: z.string({ message: 'นามสกุล is required' }).nullish(),
-  nickname: z.string({ message: 'ชื่อเล่น is required' }).nullish(),
-  firstNameEn: z.string({ message: 'ชื่อ(EN) is required' }).nullish(),
-  lastNameEn: z.string({ message: 'นามสกุล(EN) is required' }).nullish(),
-  nicknameEn: z.string({ message: 'ชื่อเล่น(EN) is required' }).nullish(),
-  email: z.string({ message: 'อีเมล is required' }).nullish(),
-  lineId: z.string({ message: 'ไลน์ไอดี is required' }).nullish(),
+  employeeId: z.string({ message: 'กรุณาระบุ รหัสพนักงาน' }).nullish(),
+  genderId: z.string({ message: 'กรุณาระบุ เพศ' }).nullish(),
+  firstName: z.string({ message: 'กรุณาระบุ ชื่อ' }).nullish(),
+  lastName: z.string({ message: 'กรุณาระบุ นามสกุล' }).nullish(),
+  nickname: z.string({ message: 'กรุณาระบุ ชื่อเล่น' }).nullish(),
+  firstNameEn: z.string({ message: 'กรุณาระบุ ชื่อ(EN)' }).nullish(),
+  lastNameEn: z.string({ message: 'กรุณาระบุ นามสกุล(EN)' }).nullish(),
+  nicknameEn: z.string({ message: 'กรุณาระบุ ชื่อเล่น(EN)' }).nullish(),
+  email: z.string({ message: 'กรุณาระบุ อีเมล' }).nullish(),
+  lineId: z.string({ message: 'กรุณาระบุ ไลน์ไอดี' }).nullish(),
 });
 
 export type Employee = backofficeComponents['schemas']['EmployeeVm'];

@@ -18,7 +18,7 @@ export const orgStructureFormDefaultValues: OrgStructureForm = {
   phoneNumber: null,
   faxNumber: null,
   emailCompany: null,
-  logoComppanyPath: null,
+  logoCompanyPath: null,
   description: null,
   parentId: null,
   id: '',

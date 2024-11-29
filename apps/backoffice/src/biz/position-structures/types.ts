@@ -3,80 +3,80 @@ import z from 'zod';
 
 export const positionStructureCreateSchema = z.object({
   positionStructureTypeId: z
-    .string({ message: 'ชนิดของตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ ชนิดของตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
   code: z
-    .string({ message: 'รหัสของตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ รหัสของตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
   name: z
-    .string({ message: 'ชื่อตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ ชื่อตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
-  nameEn: z.string({ message: 'ชื่อตำแหน่งงาน (EN) is required' }).nullable(),
-  level: z.string({ message: 'ระดับตำแหน่ง is required' }).nullable(),
+  nameEn: z.string({ message: 'กรุณาระบุ ชื่อตำแหน่งงาน (EN)' }).nullable(),
+  level: z.string({ message: 'กรุณาระบุ ระดับตำแหน่ง' }).nullable(),
   salary: z
     .union([
-      z.number({ message: 'เงินเดือนประจำตำแหน่ง is required' }),
-      z.string({ message: 'เงินเดือนประจำตำแหน่ง is required' }),
+      z.number({ message: 'กรุณาระบุ เงินเดือนประจำตำแหน่ง' }),
+      z.string({ message: 'กรุณาระบุ เงินเดือนประจำตำแหน่ง' }),
     ])
     .nullable(),
   description: z
-    .string({ message: 'คำอธิบายโครงสร้างตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ คำอธิบายโครงสร้างตำแหน่ง' })
     .nullable(),
   descriptionEn: z
-    .string({ message: 'คำอธิบายของตำแหน่งงาน (EN) is required' })
+    .string({ message: 'กรุณาระบุ คำอธิบายของตำแหน่งงาน (EN)' })
     .nullable(),
-  parentId: z.string({ message: 'รหัสหัวหน้าโดยตำแหน่ง is required' }).nullable(),
+  parentId: z.string({ message: 'กรุณาระบุ รหัสหัวหน้าโดยตำแหน่ง' }).nullable(),
 });
 
 export const positionStructureUpdateSchema = z.object({
-  id: z.string({ message: 'รหัสของตำแหน่ง is required' }).nullish(),
+  id: z.string({ message: 'กรุณาระบุ รหัสของตำแหน่ง' }).nullish(),
   positionStructureTypeId: z
-    .string({ message: 'ชนิดของตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ ชนิดของตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชนิดของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
   code: z
-    .string({ message: 'รหัสของตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ รหัสของตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'รหัสของตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
   name: z
-    .string({ message: 'ชื่อตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ ชื่อตำแหน่ง' })
     .transform((v) => v.trim())
     .refine((v) => v !== null && v !== '', {
       message: 'ชื่อตำแหน่ง ต้องไม่เป็นค่าว่าง',
     }),
-  nameEn: z.string({ message: 'ชื่อตำแหน่งงาน (EN) is required' }).nullable(),
-  level: z.string({ message: 'ระดับตำแหน่ง is required' }).nullable(),
+  nameEn: z.string({ message: 'กรุณาระบุ ชื่อตำแหน่งงาน (EN)' }).nullable(),
+  level: z.string({ message: 'กรุณาระบุ ระดับตำแหน่ง' }).nullable(),
   salary: z
     .union([
-      z.number({ message: 'เงินเดือนประจำตำแหน่ง is required' }),
-      z.string({ message: 'เงินเดือนประจำตำแหน่ง is required' }),
+      z.number({ message: 'กรุณาระบุ เงินเดือนประจำตำแหน่ง' }),
+      z.string({ message: 'กรุณาระบุ เงินเดือนประจำตำแหน่ง' }),
     ])
     .nullable(),
   description: z
-    .string({ message: 'คำอธิบายโครงสร้างตำแหน่ง is required' })
+    .string({ message: 'กรุณาระบุ คำอธิบายโครงสร้างตำแหน่ง' })
     .nullable(),
   descriptionEn: z
-    .string({ message: 'คำอธิบายของตำแหน่งงาน (EN) is required' })
+    .string({ message: 'กรุณาระบุ คำอธิบายของตำแหน่งงาน (EN)' })
     .nullable(),
-  parentId: z.string({ message: 'รหัสหัวหน้าโดยตำแหน่ง is required' }).nullable(),
+  parentId: z.string({ message: 'กรุณาระบุ รหัสหัวหน้าโดยตำแหน่ง' }).nullable(),
 });
 
 export const positionStructureSearchSchema = z.object({
-  name: z.string({ message: 'ชื่อตำแหน่ง is required' }).nullish(),
-  level: z.string({ message: 'ระดับตำแหน่ง is required' }).nullish(),
+  name: z.string({ message: 'กรุณาระบุ ชื่อตำแหน่ง' }).nullish(),
+  level: z.string({ message: 'กรุณาระบุ ระดับตำแหน่ง' }).nullish(),
 });
 
 export type PositionStructure =

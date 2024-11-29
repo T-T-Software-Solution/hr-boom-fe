@@ -122,7 +122,7 @@ export const DocumentFileDetailScreen: React.FC<
                 ไฟล์เอกสาร{' '}
               </Text>
               <Box component="div" w="fit-content" className="flex-1">
-                {!!documentFile?.filePath ? (
+                {documentFile?.filePath ? (
                   <Anchor href={documentFile?.filePath} target="_blank">
                     {documentFile?.filePath}
                   </Anchor>
