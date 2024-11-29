@@ -1,7 +1,7 @@
 'use client';
 
+import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
-import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -13,8 +13,11 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  getComboboxData
+  getComboboxData,
+  getFileUrl,
+  uploadFileIfNeeded,
 } from '@tt-ss-hr/shared-utils';
+import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import type React from 'react';
 import { useEffect } from 'react';
@@ -28,8 +31,11 @@ import {
   type PositionStructureForm as PositionStructureFormType,
   positionStructureUpdateSchema,
 } from '../types';
+import { getErrorMessage } from '@backoffice/utils/error';
 
+import type { PositionStructureType } from '@backoffice/biz/position-structure-types/types';
 
+import type { PositionStructure } from '@backoffice/biz/position-structures/types';
 
 interface PositionStructureUpdateScreenProps {
   modalId?: string;
@@ -128,9 +134,11 @@ export const PositionStructureUpdateScreen: React.FC<
           positionStructureTypeId: parsedValue?.positionStructureTypeId || '',
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
-          nameEn: parsedValue?.nameEn || '',
+          nameEn: parsedValue?.nameEn || null,
           level: parsedValue?.level || null,
-          salary: Number.parseFloat(String(parsedValue?.salary)),
+          salary: !isNaN(Number.parseFloat(String(parsedValue?.salary)))
+            ? Number.parseFloat(String(parsedValue?.salary))
+            : null,
           description: parsedValue?.description || null,
           descriptionEn: parsedValue?.descriptionEn || null,
           parentId: parsedValue?.parentId || null,
@@ -155,7 +163,9 @@ export const PositionStructureUpdateScreen: React.FC<
           name: positionStructure?.name ?? '',
           nameEn: positionStructure?.nameEn ?? null,
           level: positionStructure?.level ?? null,
-          salary: Number.parseFloat(String(positionStructure?.salary)),
+          salary: !isNaN(Number.parseFloat(String(positionStructure?.salary)))
+            ? Number.parseFloat(String(positionStructure?.salary))
+            : null,
           description: positionStructure?.description ?? null,
           descriptionEn: positionStructure?.descriptionEn ?? null,
           parentId: positionStructure?.parent?.id ?? null,

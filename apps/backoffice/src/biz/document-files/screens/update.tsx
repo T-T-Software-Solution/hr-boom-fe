@@ -133,7 +133,9 @@ export const DocumentFileUpdateScreen: React.FC<
   useEffect(
     function feedDataToForm() {
       if (documentFile && !isDocumentFileLoading) {
-        const filePath = getFileUrl(documentFile.filePath);
+        const filePath = documentFile.filePath
+          ? getFileUrl(documentFile.filePath)
+          : null;
         formHandler.setValues({
           id: documentFile?.id ?? '',
           employeeId: documentFile?.employee?.id ?? '',

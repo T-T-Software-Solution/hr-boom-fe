@@ -53,3 +53,4 @@ out
 
 # vitest
 **/vitest.config.ts.timestamp-*
+node_modules

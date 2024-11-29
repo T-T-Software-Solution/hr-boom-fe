@@ -164,7 +164,9 @@ export const OrgStructureUpdateScreen: React.FC<
           provinceId: parsedValue?.provinceId || null,
           district: parsedValue?.district || null,
           subdistrict: parsedValue?.subdistrict || null,
-          postalCode: Number(String(parsedValue?.postalCode)),
+          postalCode: !isNaN(Number(String(parsedValue?.postalCode)))
+            ? Number(String(parsedValue?.postalCode))
+            : null,
           phoneNumber: parsedValue?.phoneNumber || null,
           faxNumber: parsedValue?.faxNumber || null,
           emailCompany: parsedValue?.emailCompany || null,
@@ -184,7 +186,9 @@ export const OrgStructureUpdateScreen: React.FC<
   useEffect(
     function feedDataToForm() {
       if (orgStructure && !isOrgStructureLoading) {
-        const logoCompanyPath = getFileUrl(orgStructure.logoCompanyPath);
+        const logoCompanyPath = orgStructure.logoCompanyPath
+          ? getFileUrl(orgStructure.logoCompanyPath)
+          : null;
         formHandler.setValues({
           id: orgStructure?.id ?? '',
           orgStructureTypeId: orgStructure?.orgStructureType?.id ?? '',
@@ -199,7 +203,9 @@ export const OrgStructureUpdateScreen: React.FC<
           provinceId: orgStructure?.province?.id ?? null,
           district: orgStructure?.district ?? null,
           subdistrict: orgStructure?.subdistrict ?? null,
-          postalCode: Number(String(orgStructure?.postalCode)),
+          postalCode: !isNaN(Number(String(orgStructure?.postalCode)))
+            ? Number(String(orgStructure?.postalCode))
+            : null,
           phoneNumber: orgStructure?.phoneNumber ?? null,
           faxNumber: orgStructure?.faxNumber ?? null,
           emailCompany: orgStructure?.emailCompany ?? null,

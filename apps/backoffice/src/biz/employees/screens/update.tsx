@@ -237,7 +237,9 @@ export const EmployeeUpdateScreen: React.FC<EmployeeUpdateScreenProps> = ({
   useEffect(
     function feedDataToForm() {
       if (employee && !isEmployeeLoading) {
-        const imagePath = getFileUrl(employee.imagePath);
+        const imagePath = employee.imagePath
+          ? getFileUrl(employee.imagePath)
+          : null;
         formHandler.setValues({
           id: employee?.id ?? '',
           imagePath: imagePath?.fileName ?? null,
