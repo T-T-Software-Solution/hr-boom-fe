@@ -1,12 +1,18 @@
 import { Button, Group, RenderTreeNodePayload } from "@mantine/core";
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconChevronDown, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 
-export function Leaf({ node, elementProps }: RenderTreeNodePayload) {
+export function Leaf({ node, expanded, hasChildren, elementProps }: RenderTreeNodePayload) {
     const { nodeProps, label, value } = node;
     const id = value;
+    const { onClick, ...elementPropsWithoutOnClick } = elementProps;
 
     return (
-        <Group gap={5} {...elementProps}>
+        <Group gap={5} {...elementPropsWithoutOnClick}>
+            <IconChevronDown
+                size={18}
+                style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(-90deg)' }}
+                visibility={hasChildren ? "visible" : "hidden"}
+            />
             <div
                 style={{
                     display: "flex",
@@ -18,6 +24,7 @@ export function Leaf({ node, elementProps }: RenderTreeNodePayload) {
                     width: "fit-content",
                     textAlign: "left",
                 }}
+                onClick={onClick}
             >
                 <span style={{ color: "#888", fontSize: "1rem" }}>
                     {nodeProps?.["typeName"]}
@@ -26,12 +33,12 @@ export function Leaf({ node, elementProps }: RenderTreeNodePayload) {
                     {label}
                 </span>
                 <span style={{ color: "#888", fontSize: "1rem" }}>
-                    {nodeProps?.["orgCode"]}
+                    {nodeProps?.["code"]}
                 </span>
             </div>
             <Button
                 size="xs"
-                color="blue"
+                color="green"
                 variant="light"
                 radius="xl"
                 onClick={() => {
@@ -44,7 +51,7 @@ export function Leaf({ node, elementProps }: RenderTreeNodePayload) {
             </Button>
             <Button
                 size="xs"
-                color="green"
+                color="orange"
                 variant="light"
                 radius="xl"
                 onClick={() => {

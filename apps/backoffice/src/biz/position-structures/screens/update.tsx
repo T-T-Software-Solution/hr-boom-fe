@@ -1,7 +1,7 @@
 'use client';
 
-import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -13,11 +13,8 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  getComboboxData,
-  getFileUrl,
-  uploadFileIfNeeded,
+  getComboboxData
 } from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import type React from 'react';
 import { useEffect } from 'react';
@@ -31,11 +28,8 @@ import {
   type PositionStructureForm as PositionStructureFormType,
   positionStructureUpdateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { PositionStructureType } from '@backoffice/biz/position-structure-types/types';
 
-import type { PositionStructure } from '@backoffice/biz/position-structures/types';
 
 interface PositionStructureUpdateScreenProps {
   modalId?: string;
@@ -135,11 +129,11 @@ export const PositionStructureUpdateScreen: React.FC<
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
           nameEn: parsedValue?.nameEn || '',
-          level: parsedValue?.level || '',
+          level: parsedValue?.level || null,
           salary: Number.parseFloat(String(parsedValue?.salary)),
-          description: parsedValue?.description || '',
-          descriptionEn: parsedValue?.descriptionEn || '',
-          parentId: parsedValue?.parentId || '',
+          description: parsedValue?.description || null,
+          descriptionEn: parsedValue?.descriptionEn || null,
+          parentId: parsedValue?.parentId || null,
         },
       });
     } catch (error: unknown) {

@@ -1,40 +1,41 @@
 'use client';
 
-import { $backofficeApi, ApiError } from '@backoffice/services/api';
+import { Leaf } from '@backoffice/components/leaf/leaf';
+import { $backofficeApi, type ApiError } from '@backoffice/services/api';
 import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Card,
+  getTreeExpandedState,
   Grid,
   Group,
+  LoadingOverlay,
   Stack,
   Text,
   Title,
   Tree,
-  TreeNodeData
+  useTree,
+  type TreeNodeData
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import {
-  parseAsInteger,
-  useQueryStates
-} from 'nuqs';
-import { Leaf } from '../components/leaf';
-import {
-  defaultPagination
-} from '../constants';
-import { OrgStructure } from '../types';
+import { parseAsInteger, useQueryStates } from 'nuqs';
+import { useEffect, useState } from 'react';
+import { defaultPagination } from '../constants';
+import type { OrgStructure } from '../types';
 import { OrgStructureCreateScreen } from './create';
 import { OrgStructureUpdateScreen } from './update';
 
 export const OrgStructureMainScreen = () => {
-  const router = useRouter();
   const queryClient = useQueryClient();
-  const [pagination, setPagination] = useQueryStates({
+  const [pagination] = useQueryStates({
     pageIndex: parseAsInteger.withDefault(defaultPagination.pageIndex),
     pageSize: parseAsInteger.withDefault(defaultPagination.pageSize),
+  });
+  const [treeData, setTreeData] = useState<TreeNodeData[]>([]);
+  const tree = useTree({
+    initialExpandedState: getTreeExpandedState(treeData, '*'),
   });
 
   const {
@@ -46,8 +47,9 @@ export const OrgStructureMainScreen = () => {
       query: {
         pageNo: pagination.pageIndex,
         pageSize: pagination.pageSize,
+        sort:["CreatedDate"]
       },
-    },
+    }
   });
 
   const { mutate: deleteOrgStructure, isPending: isDeleteOrgStructurePending } =
@@ -115,23 +117,27 @@ export const OrgStructureMainScreen = () => {
     modals.open({
       modalId,
       title: 'เพิ่ม ข้อมูลโครงสร้างองค์กร',
-      children: <OrgStructureCreateScreen modalId={modalId} parentId={parentId ?? undefined} />,
+      children: (
+        <OrgStructureCreateScreen
+          modalId={modalId}
+          parentId={parentId}
+        />
+      ),
       size: 'xl',
     });
   };
-  
 
   function transformData(apiData?: OrgStructure[] | null): TreeNodeData[] {
     const map: { [key: string]: TreeNodeData } = {};
     if (!apiData) return [];
 
-    apiData.forEach(item => {
+    apiData.forEach((item) => {
       map[String(item.id)] = {
         label: item.name,
         value: String(item.id),
         nodeProps: {
           typeName: item.orgStructureType?.name || '',
-          orgCode: item.code,
+          code: item.code,
           handleCreate,
           handleUpdate,
           handleDelete,
@@ -141,7 +147,7 @@ export const OrgStructureMainScreen = () => {
     });
 
     const result: TreeNodeData[] = [];
-    apiData.forEach(item => {
+    apiData.forEach((item) => {
       if (item.parent && map[String(item.parent.id)]) {
         map[String(item.parent.id)].children?.push(map[String(item.id)]);
       } else {
@@ -152,7 +158,17 @@ export const OrgStructureMainScreen = () => {
     return result;
   }
 
-  const treeData = transformData(orgStructures?.contents);
+  useEffect(() => {
+    if (orgStructures?.contents) {
+      setTreeData(transformData(orgStructures?.contents));
+    }
+  }, [orgStructures])
+
+  useEffect(() => {
+    if (treeData.length > 0) {
+      tree.expandAllNodes();
+    }
+  }, [treeData])
 
   const isEventLoading = isOrgStructuresLoading || isDeleteOrgStructurePending;
 
@@ -170,6 +186,7 @@ export const OrgStructureMainScreen = () => {
         padding="lg"
         className="flex flex-col gap-2 w-full overflow-hidden"
       >
+        <LoadingOverlay visible={isEventLoading} />
         <Grid justify="flex-start" align="flex-start">
           <Grid.Col span={{ base: 12, md: 2 }}>
             <Button
@@ -183,9 +200,8 @@ export const OrgStructureMainScreen = () => {
           </Grid.Col>
         </Grid>
         <Tree
-          selectOnClick
-          clearSelectionOnOutsideClick
           data={treeData}
+          tree={tree}
           levelOffset={100}
           renderNode={(payload) => <Leaf {...payload} />}
         />

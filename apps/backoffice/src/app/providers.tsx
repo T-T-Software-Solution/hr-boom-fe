@@ -116,216 +116,48 @@ export const adminMenu: SidebarMenuItem[] = [
     icon: IconCategoryFilled,
     initiallyOpened: false,
     childrens: [
-      { label: 'รายการ', link: '/employee' },
-      { label: 'เพิ่มข้อมูล', link: '/employee/create' },
+      { label: 'รายการบุคลากร', link: '/employee' },
+      { label: 'การจ้างงาน', link: '/employment' },
+      { label: 'ประวัติการศึกษา', link: '/education' },
+      { label: 'ใบอนุญาตประกอบวิชาชีพ', link: '/professional-license' },
+      { label: 'ประวัติการฝึกอบรม', link: '/training-history' },
+      { label: 'ประวัติการได้รับโทษทางวินัยและการนิรโทษกรรม', link: '/criminal-history' },
+      { label: 'เอกสารอื่นๆ', link: '/document-file' },
       { label: 'รายงาน', link: '/employee/report' },
-    ],
-  },
-  {
-    label: 'การจ้างงาน',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/employment' },
-      { label: 'เพิ่มข้อมูล', link: '/employment/create' },
-    ],
-  },
-  {
-    label: 'เอกสารอื่นๆ',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/document-file' },
-      { label: 'เพิ่มข้อมูล', link: '/document-file/create' },
-    ],
-  },
-  {
-    label: 'ประวัติการศึกษา',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/education' },
-      { label: 'เพิ่มข้อมูล', link: '/education/create' },
-    ],
-  },
-  {
-    label: 'ใบอนุญาตประกอบวิชาชีพ',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/professional-license' },
-      { label: 'เพิ่มข้อมูล', link: '/professional-license/create' },
-    ],
-  },
-  {
-    label: 'ประวัติการฝึกอบรม',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/training-history' },
-      { label: 'เพิ่มข้อมูล', link: '/training-history/create' },
-    ],
-  },
-  {
-    label: 'ประวัติการได้รับโทษทางวินัยและการนิรโทษกรรม',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/criminal-history' },
-      { label: 'เพิ่มข้อมูล', link: '/criminal-history/create' },
     ],
   },
   {
     label: 'ข้อมูลโครงสร้างองค์กร',
     icon: IconCategoryFilled,
     initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/org-structure' },
-      { label: 'เพิ่มข้อมูล', link: '/org-structure/create' },
-    ],
+    link: '/org-structure'
   },
   {
-    label: 'โครงสร้างตำแหน่ง',
+    label: 'ข้อมูลโครงสร้างตำแหน่ง',
+    icon: IconCategoryFilled,
+    initiallyOpened: false,
+    link: '/position-structure'
+  },
+  {
+    label: 'ตั้งค่าระบบ',
     icon: IconCategoryFilled,
     initiallyOpened: false,
     childrens: [
-      { label: 'รายการ', link: '/position-structure' },
-      { label: 'เพิ่มข้อมูล', link: '/position-structure/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าชนิดขององค์กร',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/org-structure-type' },
-      { label: 'เพิ่มข้อมูล', link: '/org-structure-type/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าชนิดของตำแหน่ง',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/position-structure-type' },
-      { label: 'เพิ่มข้อมูล', link: '/position-structure-type/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าเงื่อนไขการหักภาษี',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/tax-condition' },
-      { label: 'เพิ่มข้อมูล', link: '/tax-condition/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าฐานภาษี',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/tax-bracket' },
-      { label: 'เพิ่มข้อมูล', link: '/tax-bracket/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่ารายการลดหย่อนภาษี',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/tax-deduction' },
-      { label: 'เพิ่มข้อมูล', link: '/tax-deduction/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าสิทธิ์ประกันสังคม',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/social-security-type' },
-      { label: 'เพิ่มข้อมูล', link: '/social-security-type/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าประเภทพนักงาน',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/employee-type' },
-      { label: 'เพิ่มข้อมูล', link: '/employee-type/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าช่องทางจ่ายเงินเดือน',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/payment-channel' },
-      { label: 'เพิ่มข้อมูล', link: '/payment-channel/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าธนาคาร',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/bank' },
-      { label: 'เพิ่มข้อมูล', link: '/bank/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าประเภทบัญชีธนาคาร',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/bank-account-type' },
-      { label: 'เพิ่มข้อมูล', link: '/bank-account-type/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าระดับการศึกษา',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/education-level' },
-      { label: 'เพิ่มข้อมูล', link: '/education-level/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าคำนำหน้าชื่อ',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/prefix' },
-      { label: 'เพิ่มข้อมูล', link: '/prefix/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าคำนำหน้าชื่อEN',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/prefix-en' },
-      { label: 'เพิ่มข้อมูล', link: '/prefix-en/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าเพศ',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/gender' },
-      { label: 'เพิ่มข้อมูล', link: '/gender/create' },
-    ],
-  },
-  {
-    label: 'ตั้งค่าจังหวัด',
-    icon: IconCategoryFilled,
-    initiallyOpened: false,
-    childrens: [
-      { label: 'รายการ', link: '/province' },
-      { label: 'เพิ่มข้อมูล', link: '/province/create' },
+      { label: 'ตั้งค่าชนิดขององค์กร', link: '/org-structure-type' },
+      { label: 'ตั้งค่าชนิดของตำแหน่ง', link: '/position-structure-type' },
+      { label: 'ตั้งค่าเงื่อนไขการหักภาษี', link: '/tax-condition' },
+      { label: 'ตั้งค่าฐานภาษี', link: '/tax-bracket' },
+      { label: 'ตั้งค่ารายการลดหย่อนภาษี', link: '/tax-deduction' },
+      { label: 'ตั้งค่าสิทธิ์ประกันสังคม', link: '/social-security-type' },
+      { label: 'ตั้งค่าประเภทพนักงาน', link: '/employee-type' },
+      { label: 'ตั้งค่าช่องทางจ่ายเงินเดือน', link: '/payment-channel' },
+      { label: 'ตั้งค่าธนาคาร', link: '/bank' },
+      { label: 'ตั้งค่าประเภทบัญชีธนาคาร', link: '/bank-account-type' },
+      { label: 'ตั้งค่าระดับการศึกษา', link: '/education-level' },
+      { label: 'ตั้งค่าคำนำหน้าชื่อ', link: '/prefix' },
+      { label: 'ตั้งค่าคำนำหน้าชื่อEN', link: '/prefix-en' },
+      { label: 'ตั้งค่าเพศ', link: '/gender' },
+      { label: 'ตั้งค่าจังหวัด', link: '/province' },
     ],
   },
 ];

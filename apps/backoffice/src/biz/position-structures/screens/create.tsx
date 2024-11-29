@@ -1,7 +1,7 @@
 'use client';
 
-import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -12,11 +12,11 @@ import {
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useQueryClient } from '@tanstack/react-query';
-import { getComboboxData, uploadFileIfNeeded } from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
+import { getComboboxData } from '@tt-ss-hr/shared-utils';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
+import { useEffect } from 'react';
 import { PositionStructureForm } from '../components/form';
 import { positionStructureFormDefaultValues } from '../constants';
 import {
@@ -27,19 +27,17 @@ import {
   type PositionStructureForm as PositionStructureFormType,
   positionStructureCreateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { PositionStructureType } from '@backoffice/biz/position-structure-types/types';
 
-import type { PositionStructure } from '@backoffice/biz/position-structures/types';
 
 interface PositionStructureCreateScreenProps {
   modalId?: string;
+  parentId?: string;
 }
 
 export const PositionStructureCreateScreen: React.FC<
   PositionStructureCreateScreenProps
-> = ({ modalId }) => {
+> = ({ modalId,parentId }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const formHandler = usePositionStructureForm({
@@ -110,11 +108,11 @@ export const PositionStructureCreateScreen: React.FC<
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
           nameEn: parsedValue?.nameEn || '',
-          level: parsedValue?.level || '',
+          level: parsedValue?.level || null,
           salary: Number.parseFloat(String(parsedValue?.salary)),
-          description: parsedValue?.description || '',
-          descriptionEn: parsedValue?.descriptionEn || '',
-          parentId: parsedValue?.parentId || '',
+          description: parsedValue?.description || null,
+          descriptionEn: parsedValue?.descriptionEn || null,
+          parentId: parsedValue?.parentId || null,
         },
       });
     } catch (error: unknown) {
@@ -124,6 +122,17 @@ export const PositionStructureCreateScreen: React.FC<
       });
     }
   };
+
+  
+  useEffect(
+    function feedDataToForm() {
+      if (positionStructures && !isPositionStructuresLoading && parentId) {
+        formHandler.setFieldValue('parentId', parentId)
+        formHandler.resetDirty();
+      }
+    },
+    [positionStructures, isPositionStructuresLoading],
+  );
 
   const isEventLoading = isCreatePositionStructureLoading;
   const isScreenLoading =
@@ -150,6 +159,7 @@ export const PositionStructureCreateScreen: React.FC<
                   'code',
                 ),
               }}
+              parentId={parentId}
             />
             <Grid justify="flex-end">
               {modalId && (

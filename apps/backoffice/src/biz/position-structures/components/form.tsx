@@ -1,47 +1,28 @@
 'use client';
-import { usePositionStructureFormContext } from '../context';
 import {
-  Button,
-  Checkbox,
   type ComboboxData,
   Container,
-  FileInput,
   Grid,
-  Group,
-  Image,
-  Input,
   NumberInput,
-  Paper,
   Select,
   TextInput,
-  Textarea,
-  rem,
+  rem
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import {
-  IconCalendar,
-  IconEye,
-  IconFileTypeDoc,
-  IconPhotoScan,
-} from '@tabler/icons-react';
-import { FileDisplay } from '@tt-ss-hr/shared-ui';
-import {
-  checkFileUrl,
-  placeholderImage,
-  viewFileInNewTabOrDownload,
-} from '@tt-ss-hr/shared-utils';
 import 'dayjs/locale/th';
+import { usePositionStructureFormContext } from '../context';
 interface PositionStructureFormProps {
   isUpdate?: boolean;
   dropdowns: {
     positionStructureTypes: ComboboxData;
     positionStructures: ComboboxData;
   };
+  parentId?: string;
 }
 
 export const PositionStructureForm: React.FC<PositionStructureFormProps> = ({
   isUpdate,
   dropdowns,
+  parentId
 }) => {
   const { getInputProps, key, getValues } = usePositionStructureFormContext();
 
@@ -103,60 +84,65 @@ export const PositionStructureForm: React.FC<PositionStructureFormProps> = ({
           />{' '}
         </Grid.Col>
       </Grid>
-      <Grid gutter="md">
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <TextInput
-            label="ระดับตำแหน่ง"
-            placeholder="ระดับตำแหน่ง"
-            key={key('level')}
-            {...getInputProps('level')}
-          />{' '}
-        </Grid.Col>
+      {isUpdate && (
+        <>
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <TextInput
+                label="ระดับตำแหน่ง"
+                placeholder="ระดับตำแหน่ง"
+                key={key('level')}
+                {...getInputProps('level')}
+              />{' '}
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <NumberInput
+                label="เงินเดือนประจำตำแหน่ง"
+                placeholder="เงินเดือนประจำตำแหน่ง"
+                thousandSeparator=","
+                decimalScale={2}
+                key={key('salary')}
+                {...getInputProps('salary')}
+              />{' '}
+            </Grid.Col>
+          </Grid>
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label="คำอธิบายโครงสร้างตำแหน่ง"
+                placeholder="คำอธิบายโครงสร้างตำแหน่ง"
+                key={key('description')}
+                {...getInputProps('description')}
+              />{' '}
+            </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <NumberInput
-            label="เงินเดือนประจำตำแหน่ง"
-            placeholder="เงินเดือนประจำตำแหน่ง"
-            thousandSeparator=","
-            decimalScale={2}
-            key={key('salary')}
-            {...getInputProps('salary')}
-          />{' '}
-        </Grid.Col>
-      </Grid>
-      <Grid gutter="md">
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <TextInput
-            label="คำอธิบายโครงสร้างตำแหน่ง"
-            placeholder="คำอธิบายโครงสร้างตำแหน่ง"
-            key={key('description')}
-            {...getInputProps('description')}
-          />{' '}
-        </Grid.Col>
-
-        <Grid.Col span={{ base: 12, md: 6 }}>
-          <TextInput
-            label="คำอธิบายของตำแหน่งงาน (EN)"
-            placeholder="คำอธิบายของตำแหน่งงาน (EN)"
-            key={key('descriptionEn')}
-            {...getInputProps('descriptionEn')}
-          />{' '}
-        </Grid.Col>
-      </Grid>
-      <Grid gutter="md">
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <Select
-            label="รหัสหัวหน้าโดยตำแหน่ง"
-            placeholder="รหัสหัวหน้าโดยตำแหน่ง"
-            data={dropdowns.positionStructures}
-            key={key('parentId')}
-            {...getInputProps('parentId')}
-            clearable
-            searchable
-            nothingFoundMessage="ไม่พบข้อมูล"
-          />{' '}
-        </Grid.Col>
-      </Grid>{' '}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label="คำอธิบายของตำแหน่งงาน (EN)"
+                placeholder="คำอธิบายของตำแหน่งงาน (EN)"
+                key={key('descriptionEn')}
+                {...getInputProps('descriptionEn')}
+              />{' '}
+            </Grid.Col>
+          </Grid>
+        </>
+      )}
+      {parentId && (
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Select
+              label="รหัสหัวหน้าโดยตำแหน่ง"
+              placeholder="รหัสหัวหน้าโดยตำแหน่ง"
+              data={dropdowns.positionStructures}
+              key={key('parentId')}
+              {...getInputProps('parentId')}
+              clearable
+              searchable
+              nothingFoundMessage="ไม่พบข้อมูล"
+            />{' '}
+          </Grid.Col>
+        </Grid>
+      )}
     </Container>
   );
 };

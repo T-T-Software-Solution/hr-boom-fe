@@ -1,90 +1,46 @@
 'use client';
 
+import { Leaf } from '@backoffice/components/leaf/leaf';
 import { $backofficeApi, ApiError } from '@backoffice/services/api';
 import { getErrorMessage } from '@backoffice/utils/error';
-import { useRouter } from 'next/navigation';
 import {
-  ActionIcon,
-  Box,
   Button,
   Card,
-  Fieldset,
+  getTreeExpandedState,
   Grid,
   Group,
   LoadingOverlay,
   Stack,
   Text,
   Title,
-  Tooltip,
-  rem,
+  Tree,
+  TreeNodeData,
+  useTree
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import {
-  IconDownload,
-  IconEdit,
-  IconEye,
-  IconSearch,
-  IconTrash,
-  IconX,
-} from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  cleanSearchParams,
-  createTableConfig,
-  getComboboxData,
-  getFileUrl,
-  viewFileInNewTabOrDownload,
-} from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
-import { zodResolver } from 'mantine-form-zod-resolver';
-import { MantineReactTable, useMantineReactTable } from 'mantine-react-table';
-import {
-  parseAsBoolean,
   parseAsInteger,
-  parseAsIsoDateTime,
-  parseAsFloat,
-  parseAsString,
-  useQueryStates,
+  useQueryStates
 } from 'nuqs';
-import { PositionStructureSearchForm } from '../components/search-form';
-import { positionStructureTableColumns } from '../components/table';
+import { useEffect, useState } from 'react';
 import {
-  defaultPagination,
-  positionStructureSearchFormDefaultValues,
+  defaultPagination
 } from '../constants';
-import {
-  PositionStructureSearchFormProvider,
-  usePositionStructureSearchForm,
-} from '../context';
-import {
-  type PositionStructureSearchForm as PositionStructureSearchFormType,
-  positionStructureSearchSchema,
-} from '../types';
+import { PositionStructure } from '../types';
 import { PositionStructureCreateScreen } from './create';
 import { PositionStructureUpdateScreen } from './update';
 
 export const PositionStructureMainScreen = () => {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const [pagination, setPagination] = useQueryStates({
     pageIndex: parseAsInteger.withDefault(defaultPagination.pageIndex),
     pageSize: parseAsInteger.withDefault(defaultPagination.pageSize),
   });
-
-  const [search, setSearch] = useQueryStates({
-    name: parseAsString,
-    level: parseAsString,
-  });
-
-  const searchFormHandler = usePositionStructureSearchForm({
-    mode: 'uncontrolled',
-    initialValues: {
-      ...positionStructureSearchFormDefaultValues,
-      ...search,
-    },
-    validateInputOnChange: true,
-    validate: zodResolver(positionStructureSearchSchema),
+  const [treeData, setTreeData] = useState<TreeNodeData[]>([]);
+  const tree = useTree({
+    initialExpandedState: getTreeExpandedState(treeData, '*'),
   });
 
   const {
@@ -96,7 +52,7 @@ export const PositionStructureMainScreen = () => {
       query: {
         pageNo: pagination.pageIndex,
         pageSize: pagination.pageSize,
-        ...cleanSearchParams(search),
+        sort:["CreatedDate"]
       },
     },
   });
@@ -163,133 +119,70 @@ export const PositionStructureMainScreen = () => {
     });
   };
 
-  const handleDetail = (id: string) => {
-    router.push(`/position-structure/detail/${id}`);
-  };
-
-  const handleCreate = () => {
+  const handleCreate = (parentId?: string) => {
     const modalId = 'position-structure-create-modal';
     modals.open({
       modalId,
       title: 'เพิ่ม โครงสร้างตำแหน่ง',
-      children: <PositionStructureCreateScreen modalId={modalId} />,
+      children: <PositionStructureCreateScreen
+        modalId={modalId}
+        parentId={parentId} />,
       size: 'xl',
     });
   };
 
-  const handleViewFile = async (file?: string | null) => {
-    if (!file) {
-      notifications.show({
-        color: 'red',
-        message: 'ไม่พบไฟล์',
-      });
-      return;
+  function transformData(apiData?: PositionStructure[] | null): TreeNodeData[] {
+    const map: { [key: string]: TreeNodeData } = {};
+    if (!apiData) return [];
+
+    apiData.forEach((item) => {
+      map[String(item.id)] = {
+        label: item.name,
+        value: String(item.id),
+        nodeProps: {
+          typeName: item.positionStructureType?.name || '',
+          code: item.code,
+          handleCreate,
+          handleUpdate,
+          handleDelete,
+        },
+        children: [],
+      };
+    });
+
+    const result: TreeNodeData[] = [];
+    apiData.forEach((item) => {
+      if (item.parent && map[String(item.parent.id)]) {
+        map[String(item.parent.id)].children?.push(map[String(item.id)]);
+      } else {
+        result.push(map[String(item.id)]);
+      }
+    });
+
+    return result;
+  }
+
+  useEffect(() => {
+    if (positionStructures?.contents) {
+      setTreeData(transformData(positionStructures?.contents));
     }
+  }, [positionStructures])
 
-    const fileUrl = getFileUrl(file);
-    viewFileInNewTabOrDownload({
-      uploadFile: fileUrl?.fileName,
-      previewFile: fileUrl?.fullPath,
-    });
-  };
+  useEffect(() => {
+    if (treeData.length > 0) {
+      tree.expandAllNodes();
+    }
+  }, [treeData])
 
-  const handleSearchSubmit = (values: PositionStructureSearchFormType) => {
-    setPagination({ pageIndex: 1, pageSize: 10 });
-    setSearch({
-      name: values?.name,
-      level: values?.level,
-    });
-  };
 
-  const handleClearSearch = () => {
-    searchFormHandler.reset();
-    setPagination({ pageIndex: 1, pageSize: 10 });
-    setSearch({
-      name: positionStructureSearchFormDefaultValues?.name,
-      level: positionStructureSearchFormDefaultValues?.level,
-    });
-  };
-
-  const isEventLoading =
-    isPositionStructuresLoading || isDeletePositionStructurePending;
-  const table = useMantineReactTable({
-    ...createTableConfig({
-      columns: positionStructureTableColumns,
-      data: positionStructures?.contents ?? [],
-      totalCount: positionStructures?.totalCount ?? 0,
-      pagination,
-      setPagination,
-      isEventLoading,
-      isError: isPositionStructuresError,
-    }),
-    renderRowActions: ({ row }) => (
-      <Group display="flex" w="100%" gap="xs">
-        <Tooltip label="รายละเอียด" position="bottom">
-          <ActionIcon
-            aria-label="รายละเอียด"
-            color="blue"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleDetail(row?.original?.id ?? '')}
-          >
-            <IconEye stroke={1.5} style={{ width: rem(18), height: rem(18) }} />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label="แก้ไข" position="bottom">
-          <ActionIcon
-            aria-label="แก้ไข"
-            color="orange"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleUpdate(row?.original?.id ?? '')}
-          >
-            <IconEdit
-              stroke={1.5}
-              style={{ width: rem(18), height: rem(18) }}
-            />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip label="ลบ" position="bottom">
-          <ActionIcon
-            aria-label="ลบ"
-            color="red"
-            variant="filled"
-            size="md"
-            radius="md"
-            loading={isEventLoading}
-            disabled={!row?.original?.id || isEventLoading}
-            onClick={() => handleDelete(row?.original?.id)}
-          >
-            <IconTrash
-              stroke={1.5}
-              style={{ width: rem(18), height: rem(18) }}
-            />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    ),
-  });
+  const isEventLoading = isPositionStructuresLoading || isDeletePositionStructurePending;
 
   return (
     <Stack gap="xs">
       <Group gap="xs" justify="space-between">
         <Title order={1} size="h3">
-          โครงสร้างตำแหน่ง{' '}
+          ข้อมูลโครงสร้างตำแหน่ง{' '}
         </Title>
-        <Button
-          color="primary"
-          size="xs"
-          variant="outline"
-          onClick={handleCreate}
-        >
-          เพิ่ม โครงสร้างตำแหน่ง{' '}
-        </Button>
       </Group>
       <Card
         withBorder
@@ -298,49 +191,26 @@ export const PositionStructureMainScreen = () => {
         padding="lg"
         className="flex flex-col gap-2 w-full overflow-hidden"
       >
-        <PositionStructureSearchFormProvider form={searchFormHandler}>
-          <Fieldset variant="unstyled" disabled={isEventLoading}>
-            <form
-              onSubmit={searchFormHandler.onSubmit(handleSearchSubmit)}
-              className="flex flex-col gap-4"
+        <LoadingOverlay visible={isEventLoading} />
+        <Grid justify="flex-start" align="flex-start">
+          <Grid.Col span={{ base: 12, md: 2 }}>
+            <Button
+              color="primary"
+              size="xs"
+              variant="outline"
+              onClick={() => handleCreate()}
             >
-              <PositionStructureSearchForm />
-              <Grid justify="flex-end" align="flex-end">
-                {Object.values(search).some(
-                  (value) => value !== null && value !== undefined,
-                ) && (
-                  <Grid.Col span={{ base: 12, md: 2 }}>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      bd="none"
-                      leftSection={<IconX size={14} />}
-                      loading={isEventLoading}
-                      w="100%"
-                      onClick={handleClearSearch}
-                    >
-                      ล้างข้อมูล
-                    </Button>
-                  </Grid.Col>
-                )}
-                <Grid.Col span={{ base: 12, md: 3 }}>
-                  <Button
-                    type="submit"
-                    leftSection={<IconSearch size={14} />}
-                    loading={isEventLoading}
-                    w="100%"
-                  >
-                    ค้นหา
-                  </Button>
-                </Grid.Col>
-              </Grid>
-            </form>
-          </Fieldset>
-        </PositionStructureSearchFormProvider>
+              เพิ่ม โครงสร้างตำแหน่ง{' '}
+            </Button>
+          </Grid.Col>
+        </Grid>
+        <Tree
+          data={treeData}
+          tree={tree}
+          levelOffset={100}
+          renderNode={(payload) => <Leaf {...payload} />}
+        />
       </Card>
-      <Box component="div" w="100%" className="overflow-hidden">
-        <MantineReactTable table={table} />
-      </Box>
     </Stack>
   );
 };

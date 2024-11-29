@@ -2,6 +2,7 @@
 
 import { uploadFile } from '@backoffice/actions/uploader';
 import { $backofficeApi, type ApiError } from '@backoffice/services/api';
+import { getErrorMessage } from '@backoffice/utils/error';
 import {
   Button,
   Fieldset,
@@ -17,7 +18,6 @@ import {
   getFileUrl,
   uploadFileIfNeeded,
 } from '@tt-ss-hr/shared-utils';
-import dayjs from 'dayjs';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import type React from 'react';
 import { useEffect } from 'react';
@@ -28,15 +28,10 @@ import {
   type OrgStructureForm as OrgStructureFormType,
   orgStructureUpdateSchema,
 } from '../types';
-import { getErrorMessage } from '@backoffice/utils/error';
 
-import type { OrgStructureType } from '@backoffice/biz/org-structure-types/types';
 
-import type { SocialSecurityType } from '@backoffice/biz/social-security-types/types';
 
-import type { Province } from '@backoffice/biz/provinces/types';
 
-import type { OrgStructure } from '@backoffice/biz/org-structures/types';
 
 interface OrgStructureUpdateScreenProps {
   modalId?: string;
@@ -156,21 +151,21 @@ export const OrgStructureUpdateScreen: React.FC<
           code: parsedValue?.code || '',
           name: parsedValue?.name || '',
           nameEn: parsedValue?.nameEn || '',
-          taxId: parsedValue?.taxId || '',
-          taxId2: parsedValue?.taxId2 || '',
-          socialSecurityTypeId: parsedValue?.socialSecurityTypeId || '',
-          addressTh: parsedValue?.addressTh || '',
-          addressEn: parsedValue?.addressEn || '',
-          provinceId: parsedValue?.provinceId || '',
-          district: parsedValue?.district || '',
-          subdistrict: parsedValue?.subdistrict || '',
-          postalCode: Number(String(parsedValue?.postalCode)),
-          phoneNumber: parsedValue?.phoneNumber || '',
-          faxNumber: parsedValue?.faxNumber || '',
-          emailCompany: parsedValue?.emailCompany || '',
-          logoComppanyPath: logoComppanyPath || '',
-          description: parsedValue?.description || '',
-          parentId: parsedValue?.parentId || '',
+          taxId: parsedValue?.taxId || null,
+          taxId2: parsedValue?.taxId2 || null,
+          socialSecurityTypeId: parsedValue?.socialSecurityTypeId || null,
+          addressTh: parsedValue?.addressTh || null,
+          addressEn: parsedValue?.addressEn || null,
+          provinceId: parsedValue?.provinceId || null,
+          district: parsedValue?.district || null,
+          subdistrict: parsedValue?.subdistrict || null,
+          postalCode: Number(String(parsedValue?.postalCode)) || null,
+          phoneNumber: parsedValue?.phoneNumber || null,
+          faxNumber: parsedValue?.faxNumber || null,
+          emailCompany: parsedValue?.emailCompany || null,
+          logoComppanyPath: logoComppanyPath || null,
+          description: parsedValue?.description || null,
+          parentId: parsedValue?.parentId || null,
         },
       });
     } catch (error: unknown) {
