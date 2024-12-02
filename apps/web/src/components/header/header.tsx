@@ -30,6 +30,7 @@ import {
     IconNotification,
 } from '@tabler/icons-react';
 import classes from './header.module.css';
+import { Link } from '@tanstack/react-router';
 
 const mockdata = [
     {
@@ -64,7 +65,7 @@ const mockdata = [
     },
 ];
 
-export function HeaderMegaMenu() {
+export function Header() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
@@ -94,9 +95,9 @@ export function HeaderMegaMenu() {
                     <IconLetterT size={30} />
 
                     <Group h="100%" gap={0} visibleFrom="sm">
-                        <a href="#" className={classes.link}>
+                        <Link to="/" className={classes.link}>
                             Home
-                        </a>
+                        </Link>
                         <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
                             <HoverCard.Target>
                                 <a href="#" className={classes.link}>
@@ -138,12 +139,9 @@ export function HeaderMegaMenu() {
                                 </div>
                             </HoverCard.Dropdown>
                         </HoverCard>
-                        <a href="#" className={classes.link}>
-                            Learn
-                        </a>
-                        <a href="#" className={classes.link}>
-                            Academy
-                        </a>
+                        <Link to="/about" className={classes.link}>
+                            About
+                        </Link>
                     </Group>
 
                     <Group visibleFrom="sm">

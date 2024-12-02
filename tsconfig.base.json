@@ -23,7 +23,7 @@
       "@tt-ss-hr/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@backoffice/*": ["apps/backoffice/src/*"],
       "@web-next/*": ["apps/web-next/src/*"],
-      "@web/*": ["apps/web/src/*"]
+      // "@web/*": ["apps/web/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
