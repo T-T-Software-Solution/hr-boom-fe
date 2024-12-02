@@ -21,7 +21,7 @@ export default defineConfig({
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/apps/web',
+      reportsDirectory: '../../coverage/apps/web-next',
       provider: 'v8',
     },
   },

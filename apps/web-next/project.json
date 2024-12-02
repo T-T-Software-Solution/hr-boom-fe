@@ -1,27 +1,27 @@
 {
-  "name": "web",
+  "name": "web-next",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/web",
+  "sourceRoot": "apps/web-next",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project web --web",
+  "// targets": "to see all targets run: nx show project web-next --web",
   "targets": {
     "serve": {
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "web:build",
+        "buildTarget": "web-next:build",
         "dev": true,
         "port": 3001,
         "experimentalHttps": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "web:build:development",
+          "buildTarget": "web-next:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "web:build:production",
+          "buildTarget": "web-next:build:production",
           "dev": false
         }
       }

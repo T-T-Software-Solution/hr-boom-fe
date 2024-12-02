@@ -13,7 +13,7 @@
       "./.nx",
       "./node_modules",
       "./.vscode",
-      "./apps/web/.next",
+      "./apps/web-next/.next",
       "./apps/backoffice/.next",
       "./apps/backoffice/public"
     ]
@@ -34,7 +34,7 @@
       "./.nx",
       "./node_modules",
       "./.vscode",
-      "./apps/web/.next",
+      "./apps/web-next/.next",
       "./apps/backoffice/.next",
       "./apps/backoffice/public"
     ]
@@ -68,8 +68,8 @@
       "./.nx",
       "./node_modules",
       "./.vscode",
-      "./apps/web/.next",
-      "./apps/web/index.d.ts",
+      "./apps/web-next/.next",
+      "./apps/web-next/index.d.ts",
       "./apps/backoffice/.next",
       "./apps/backoffice/public"
     ]
