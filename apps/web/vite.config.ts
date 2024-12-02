@@ -1,7 +1,8 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 /// <reference types='vitest' />
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import path, { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+// import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +22,11 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths()],
+  plugins: [
+    react(),
+    // nxViteTsPaths(),
+    TanStackRouterVite(),
+  ],
 
   // Uncomment this if you are using workers.
   // worker: {

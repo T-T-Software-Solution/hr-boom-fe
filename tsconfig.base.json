@@ -22,7 +22,8 @@
       "@tt-ss-hr/shared-ui": ["libs/shared/ui/src/index.ts"],
       "@tt-ss-hr/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@backoffice/*": ["apps/backoffice/src/*"],
-      "@web-next/*": ["apps/web-next/src/*"]
+      "@web-next/*": ["apps/web-next/src/*"],
+      "@web/*": ["apps/web/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
