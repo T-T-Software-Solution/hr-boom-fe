@@ -1,12 +1,12 @@
+import { createGlobPatternsForDependencies } from '@nx/react/tailwind';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createGlobPatternsForDependencies } from '@nx/react/tailwind';
 import type { Config } from 'tailwindcss';
 import sharedPreset from '../../tailwind.preset';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const config: Pick<Config, 'prefix' | 'presets' | 'content'> = {
+const config: Pick<Config, 'prefix' | 'presets' | 'content' | 'theme'> = {
   content: [
     path.join(
       __dirname,
@@ -15,6 +15,13 @@ const config: Pick<Config, 'prefix' | 'presets' | 'content'> = {
     ...createGlobPatternsForDependencies(__dirname),
   ],
   presets: [sharedPreset],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Bai Jamjuree', 'sans-serif'],
+      },
+    },
+  }
 };
 
 export default config;

@@ -29,8 +29,8 @@ import {
     IconLetterT,
     IconNotification,
 } from '@tabler/icons-react';
-import classes from './header.module.css';
 import { Link } from '@tanstack/react-router';
+import classes from './header.module.css';
 
 const mockdata = [
     {
@@ -141,6 +141,9 @@ export function Header() {
                         </HoverCard>
                         <Link to="/about" className={classes.link}>
                             About
+                        </Link>
+                        <Link to="/chat" className={classes.link}>
+                            Chat
                         </Link>
                     </Group>
 

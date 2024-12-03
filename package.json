@@ -21,6 +21,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@ant-design/x": "^1.0.1",
+    "@fontsource/bai-jamjuree": "^5.1.0",
     "@mantine/carousel": "^7.14.3",
     "@mantine/charts": "^7.14.3",
     "@mantine/code-highlight": "^7.14.3",
