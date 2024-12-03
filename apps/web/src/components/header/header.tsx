@@ -143,7 +143,7 @@ export function Header() {
                             About
                         </Link>
                         <Link to="/chat" className={classes.link}>
-                            Chat
+                            แชท
                         </Link>
                     </Group>
 

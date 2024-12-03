@@ -50,24 +50,31 @@ function Chat() {
                         icon={<Avatar src={ttRobot} alt="น้องทีที" size="lg" />}
                         title={(() => {
                             const hour = new Date().getHours();
-                            let greeting = '';
                             if (hour >= 5 && hour < 12) {
-                                greeting = "สวัสดีตอนเช้าค่ะ ✨ วันนี้อากาศดีนะคะ";
-                            } else if (hour >= 12 && hour < 17) {
-                                greeting = "สวัสดีตอนกลางวันค่ะ 🌞 รับประทานอาหารกลางวันแล้วหรือยังคะ?";
-                            } else if (hour >= 17 && hour < 22) {
-                                greeting = "สวัสดีตอนเย็นค่ะ 🌅 วันนี้เป็นอย่างไรบ้างคะ?";
-                            } else {
-                                greeting = "สวัสดีตอนดึกค่ะ 🌙 ดึกแล้วนะคะ อย่าลืมพักผ่อนด้วยนะคะ";
+                                return "สวัสดีตอนเช้าค่ะ ✨ วันนี้อากาศดีนะคะ";
+                            }
+                            if (hour >= 12 && hour < 17) {
+                                return "สวัสดีตอนกลางวันค่ะ 🌞 รับประทานอาหารกลางวันแล้วหรือยังคะ?";
+                            }
+                            if (hour >= 17 && hour < 22) {
+                                return "สวัสดีตอนเย็นค่ะ 🌅 วันนี้เป็นอย่างไรบ้างคะ?";
                             }
 
-                            return <Title order={4} ff={theme.fontFamily} mb={0}>{greeting}</Title>;
+                            return "สวัสดีตอนดึกค่ะ 🌙 ดึกแล้วนะคะ อย่าลืมพักผ่อนด้วยนะคะ";
                         })()}
-                        description={<Text ff={theme.fontFamily}>ฉันคือน้องทีที ผู้ช่วยที่แสนดีของคุณ...</Text>}
+                        description="ฉันคือน้องทีที ผู้ช่วยที่แสนดีของคุณ..."
+                        styles={{
+                            title: {
+                                fontFamily: theme.fontFamily,
+                            },
+                            description: {
+                                fontFamily: theme.fontFamily,
+                            },
+                        }}
                     />
 
                     <Prompts
-                        title={<Text ff={theme.fontFamily}>คุณต้องการให้ฉันช่วยเหลืออะไรไหมคะ?</Text>}
+                        title="คุณต้องการให้ฉันช่วยเหลืออะไรไหมคะ?"
                         items={[
                             {
                                 key: '1',
@@ -95,13 +102,18 @@ function Chat() {
                         ]}
                         wrap
                         styles={{
+                            title: {
+                                fontFamily: theme.fontFamily,
+                            },
                             item: {
+                                fontFamily: theme.fontFamily,
                                 flex: 'none',
                                 width: 'calc(30% - 6px)',
-                                backgroundImage: "linear-gradient(137deg, #fff1f1 0%, #ffe4e4 100%)",
+                                backgroundImage: "linear-gradient(137deg, #fff5e6 0%, #ffe7e7 100%)",
                                 border: 0,
                             },
                             subItem: {
+                                fontFamily: theme.fontFamily,
                                 background: 'rgba(255,255,255,0.45)',
                                 border: '1px solid #FFF',
                             },
@@ -119,10 +131,16 @@ function Chat() {
                             ai: {
                                 placement: 'start',
                                 avatar: <Avatar src={ttRobot} alt="น้องทีที" size="md" />,
-                                header: <Text size="sm" c="primary.6" ff={theme.fontFamily}>น้องทีที</Text>,
+                                header: 'น้องทีที',
                                 typing: { step: 5, interval: 20 },
                                 style: {
                                     maxWidth: 600,
+                                },
+                                styles: {
+                                    header: {
+                                        fontFamily: theme.fontFamily,
+                                        color: theme.colors?.primary?.[6],
+                                    },
                                 },
                             },
                             local: {
@@ -179,8 +197,10 @@ function Chat() {
                         value={content}
                         onChange={setContent}
                         placeholder="พิมพ์ข้อความที่คุณต้องการถาม..."
-                        style={{
-                            fontFamily: theme.fontFamily,
+                        styles={{
+                            input: {
+                                fontFamily: theme.fontFamily,
+                            },
                         }}
                         onSubmit={(nextContent) => {
                             onRequest(nextContent);
