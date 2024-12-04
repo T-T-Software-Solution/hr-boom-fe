@@ -2,10 +2,10 @@ import { Attachments, type AttachmentsProps, Bubble, Conversations, type Convers
 import type { BubbleListProps } from '@ant-design/x/es/bubble/BubbleList';
 import type { Conversation } from '@ant-design/x/es/conversations';
 import type { MessageInfo } from '@ant-design/x/es/useXChat';
-import { ActionIcon, Avatar, Button, Card, Container, Divider, Group, Indicator, Loader, Stack, Text } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { ActionIcon, Avatar, Button, Card, Container, Group, Indicator, Loader, Stack, Text } from '@mantine/core';
+import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCloudUpload, IconFlame, IconLink, IconPlus, IconSparkles, IconTrash } from '@tabler/icons-react';
+import { IconCloudUpload, IconFlame, IconLink, IconMenu2, IconPlus, IconSparkles, IconTrash, IconX } from '@tabler/icons-react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -59,6 +59,8 @@ function Chat() {
     });
     const [activeKey, setActiveKey] = React.useState<Conversation['key'] | undefined>(undefined);
     const [attachedFiles, setAttachedFiles] = React.useState<AttachmentsProps['items']>([]);
+    const [showConversations, setShowConversations] = React.useState(true);
+    const isMobileOrTablet = useMediaQuery('(max-width: 992px)');
 
     const senderRef = React.useRef<HTMLDivElement>(null);
 
@@ -72,7 +74,7 @@ function Chat() {
             const aiResponse: AgentAIMessage = {
                 conversationKey,
                 type: 'ai',
-                content: `ผลลัพธ์ของคุณคือ: ${content}`,
+                content: `ฉันยังไม่มีความรู้เกี่ยวกับคำถาม "${content}" ค่ะ ฉันจะศึกษาข้อมูลเพิ่มเติมเพื่อตอบคำถามนี้ให้คุณค่ะ`,
                 list: [
                     {
                         type: 'text',
@@ -139,6 +141,8 @@ function Chat() {
         ...message,
     }));
 
+    console.log(items);
+
     const onSubmit = (conversationKey: Conversation['key'], nextContent: string) => {
         if (!nextContent) return;
         onRequest({
@@ -179,8 +183,8 @@ function Chat() {
         setConversations(prev => prev.filter(({ key }) => key !== conversationKey));
         if (activeKey === conversationKey) {
             setActiveKey(undefined);
-            setMessages([]);
         }
+        setMessages([]);
         notifications.show({
             title: 'ลบการสนทนา',
             message: 'การสนทนาถูกลบออกจากประวัติ',
@@ -322,151 +326,251 @@ function Chat() {
         </Stack>
     )
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    React.useEffect(() => {
+        if (activeKey) {
+            setMessages(messageHistories[activeKey] || []);
+        }
+    }, [activeKey, messageHistories]);
+
     return (
         <Container p="md">
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <XProvider direction="ltr">
-                    <Group align='flex-start' h={600}>
-                        <Stack w={220} gap="md" justify='flex-start' align='stretch' h="100%">
-                            <Conversations
-                                items={conversations}
-                                activeKey={activeKey}
-                                onActiveChange={onConversationClick}
-                                menu={conversationOperationMenu}
-                                style={{
-                                    height: "100%",
-                                    overflow: 'scroll',
-                                    fontFamily: theme.fontFamily,
-                                }}
-                                styles={{
-                                    item: {
-                                        flex: 'none',
-                                        fontFamily: theme.fontFamily,
-                                    },
-                                }}
-                            />
-                            <Button
-                                onClick={onAddConversation}
-                                variant='transparent'
-                                leftSection={<IconPlus />}
+            <Card shadow="sm" radius="md" withBorder>
+                <Card.Section
+                    withBorder
+                    inheritPadding
+                    py="xs"
+                >
+                    <Group justify="space-between" align="center">
+                        <Group gap="sm">
+                            <ActionIcon
+                                onClick={() => setShowConversations(!showConversations)}
+                                variant="light"
+                                size="lg"
+                                color="gray"
+                                title={showConversations ? "ซ่อนรายการแชท" : "แสดงรายการแชท"}
                             >
-                                สร้างแชทใหม่
-                            </Button>
-                        </Stack>
-                        <Divider orientation='vertical' />
-                        {
-                            activeKey && (
-                                <Stack gap="md" justify='flex-start' h="100%" w="100%" align='stretch' style={{ flex: 1 }}>
-                                    <Bubble.List
-                                        autoScroll
-                                        roles={{
-                                            ai: {
-                                                placement: 'start',
-                                                avatar: <Avatar src={ttRobot} alt="น้องทีที" size="md" />,
-                                                header: 'น้องทีที',
-                                                typing: { step: 5, interval: 20 },
-                                                loadingRender: () => <Loader color="primary.6" size="sm" />,
-                                                variant: 'outlined',
-                                                style: {
-                                                    maxWidth: 600,
-                                                },
-                                                styles: {
-                                                    header: {
-                                                        fontFamily: theme.fontFamily,
-                                                    },
-                                                },
-                                            },
-                                            local: {
-                                                placement: 'end',
-                                                avatar: <Avatar color="primary" size="md">คุณ</Avatar>,
-                                                variant: 'outlined',
-                                                typing: false,
-                                                styles: {
-                                                    content: {
-                                                        color: theme.colors?.primary?.[6],
-                                                        borderColor: theme.colors?.primary?.[1],
-                                                    }
-                                                }
-                                            },
+                                {showConversations ? <IconX size={20} /> : <IconMenu2 size={20} />}
+                            </ActionIcon>
+                            <Group gap="xs">
+                                <Avatar src={ttRobot} size="sm" />
+                                <Text size="sm" fw={500}>น้องทีที AI Chat</Text>
+                            </Group>
+                        </Group>
+                    </Group>
+                </Card.Section>
+
+                <Card.Section py="md">
+                    <XProvider direction="ltr">
+                        <Group align='flex-start' h={600} pos="relative">
+                            {/* Conversations panel with slide animation */}
+                            <Stack
+                                style={{
+                                    height: '100%',
+                                    width: showConversations ? 220 : 0,
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    opacity: showConversations ? 1 : 0,
+                                    position: isMobileOrTablet ? 'absolute' : 'relative',
+                                    left: 0,
+                                    top: 0,
+                                    bottom: 0,
+                                    background: theme.white,
+                                    zIndex: 1,
+                                    borderRight: showConversations ? '1px solid var(--mantine-color-gray-2)' : 'none',
+                                }}
+                            >
+                                {showConversations && (
+                                    <ConversationsPanel
+                                        conversations={conversations}
+                                        activeKey={activeKey}
+                                        onConversationClick={(key) => {
+                                            onConversationClick(key);
+                                            if (isMobileOrTablet) {
+                                                setShowConversations(false);
+                                            }
                                         }}
-                                        style={{ flex: 1 }}
-                                        items={items.length > 0 ? items : [{ content: placeholderNode, variant: 'borderless' }]}
+                                        conversationOperationMenu={conversationOperationMenu}
+                                        onAddConversation={onAddConversation}
                                     />
-                                    <Sender
-                                        disabled={!activeKey}
-                                        header={
-                                            <Sender.Header
-                                                title="ไฟล์แนบ"
-                                                open={headerOpen}
-                                                onOpenChange={setHeaderOpen}
-                                                styles={{
-                                                    content: {
-                                                        padding: 0,
+
+                                )}
+                            </Stack>
+
+                            {/* Chat area */}
+                            <Stack
+                                gap="md"
+                                justify='flex-start'
+                                h="100%"
+                                w="100%"
+                                align='stretch'
+                                style={{
+                                    flex: 1,
+                                    marginLeft: isMobileOrTablet ? (showConversations ? '220px' : 0) : showConversations ? '1rem' : 0,
+                                    transition: 'margin 0.3s ease',
+                                }}
+                            >
+                                {activeKey ? (
+                                    <Stack gap="md" justify='flex-start' h="100%" w="100%" align='stretch' px="md" style={{ flex: 1 }}>
+                                        <Bubble.List
+                                            autoScroll
+                                            roles={{
+                                                ai: {
+                                                    placement: 'start',
+                                                    avatar: <Avatar src={ttRobot} alt="น้องทีที" size="md" />,
+                                                    header: 'น้องทีที',
+                                                    typing: { step: 5, interval: 20 },
+                                                    loadingRender: () => <Loader color="primary.6" size="sm" />,
+                                                    variant: 'outlined',
+                                                    style: {
+                                                        maxWidth: 600,
                                                     },
-                                                }}
-                                            >
-                                                <Attachments
-                                                    // Mock not real upload file
-                                                    beforeUpload={() => false}
-                                                    items={attachedFiles}
-                                                    onChange={handleFileChange}
-                                                    placeholder={(type) =>
-                                                        type === 'drop'
-                                                            ? {
-                                                                title: 'Drop file here',
-                                                            }
-                                                            : {
-                                                                icon: <IconCloudUpload />,
-                                                                title: 'Upload files',
-                                                                description: 'Click or drag files to this area to upload',
-                                                            }
+                                                    styles: {
+                                                        header: {
+                                                            fontFamily: theme.fontFamily,
+                                                        },
+                                                    },
+                                                },
+                                                local: {
+                                                    placement: 'end',
+                                                    avatar: <Avatar color="primary" size="md">คุณ</Avatar>,
+                                                    variant: 'outlined',
+                                                    typing: false,
+                                                    styles: {
+                                                        content: {
+                                                            color: theme.colors?.primary?.[6],
+                                                            borderColor: theme.colors?.primary?.[1],
+                                                        }
                                                     }
-                                                    getDropContainer={() => senderRef.current}
-                                                />
-                                            </Sender.Header>
-                                        }
-                                        prefix={
-                                            <Indicator
-                                                inline
-                                                processing
-                                                color="red"
-                                                label={attachedFiles?.length ?? ''}
-                                                size={16}
-                                                disabled={attachedFiles && attachedFiles?.length < 1 || headerOpen}
-                                            >
-                                                <ActionIcon
-                                                    variant='transparent'
-                                                    c="gray.6"
-                                                    aria-label='Upload file'
-                                                    onClick={() => {
-                                                        setHeaderOpen(!headerOpen);
+                                                },
+                                            }}
+                                            style={{ flex: 1 }}
+                                            items={items.length > 0 ? items : [{ content: placeholderNode, variant: 'borderless' }]}
+                                        />
+                                        <Sender
+                                            disabled={!activeKey}
+                                            header={
+                                                <Sender.Header
+                                                    title="ไฟล์แนบ"
+                                                    open={headerOpen}
+                                                    onOpenChange={setHeaderOpen}
+                                                    styles={{
+                                                        content: {
+                                                            padding: 0,
+                                                        },
                                                     }}
                                                 >
-                                                    <IconLink />
-                                                </ActionIcon>
-                                            </Indicator>
+                                                    <Attachments
+                                                        // Mock not real upload file
+                                                        beforeUpload={() => false}
+                                                        items={attachedFiles}
+                                                        onChange={handleFileChange}
+                                                        placeholder={(type) =>
+                                                            type === 'drop'
+                                                                ? {
+                                                                    title: 'Drop file here',
+                                                                }
+                                                                : {
+                                                                    icon: <IconCloudUpload />,
+                                                                    title: 'Upload files',
+                                                                    description: 'Click or drag files to this area to upload',
+                                                                }
+                                                        }
+                                                        getDropContainer={() => senderRef.current}
+                                                    />
+                                                </Sender.Header>
+                                            }
+                                            prefix={
+                                                <Indicator
+                                                    inline
+                                                    processing
+                                                    color="red"
+                                                    label={attachedFiles?.length ?? ''}
+                                                    size={16}
+                                                    disabled={attachedFiles && attachedFiles?.length < 1 || headerOpen}
+                                                >
+                                                    <ActionIcon
+                                                        variant='transparent'
+                                                        c="gray.6"
+                                                        aria-label='Upload file'
+                                                        onClick={() => {
+                                                            setHeaderOpen(!headerOpen);
+                                                        }}
+                                                    >
+                                                        <IconLink />
+                                                    </ActionIcon>
+                                                </Indicator>
 
 
-                                        }
-                                        loading={agent.isRequesting()}
-                                        value={content}
-                                        onChange={setContent}
-                                        placeholder="พิมพ์ข้อความที่คุณต้องการถาม..."
-                                        styles={{
-                                            input: {
-                                                fontFamily: theme.fontFamily,
-                                            },
-                                        }}
-                                        onSubmit={(content) => onSubmit(activeKey, content)}
-                                        allowSpeech
-                                    />
-                                </Stack>
-                            )
-                        }
-                    </Group>
-
-                </XProvider>
+                                            }
+                                            loading={agent.isRequesting()}
+                                            value={content}
+                                            onChange={setContent}
+                                            placeholder="พิมพ์ข้อความที่คุณต้องการถาม..."
+                                            styles={{
+                                                input: {
+                                                    fontFamily: theme.fontFamily,
+                                                },
+                                            }}
+                                            onSubmit={(content) => onSubmit(activeKey, content)}
+                                            allowSpeech
+                                        />
+                                    </Stack>
+                                ) : (
+                                    null
+                                )}
+                            </Stack>
+                        </Group>
+                    </XProvider>
+                </Card.Section>
             </Card>
         </Container>
+    );
+}
+
+// Add interface for ConversationsPanel props
+interface ConversationsPanelProps {
+    conversations: Conversation[];
+    activeKey: Conversation['key'] | undefined;
+    onConversationClick: ConversationsProps['onActiveChange'];
+    conversationOperationMenu: ConversationsProps['menu'];
+    onAddConversation: () => void;
+}
+
+// Update the component with types
+function ConversationsPanel({
+    conversations,
+    activeKey,
+    onConversationClick,
+    conversationOperationMenu,
+    onAddConversation
+}: ConversationsPanelProps) {
+    return (
+        <Stack w={220} gap="md" justify='flex-start' align='stretch' h="100%">
+            <Conversations
+                items={conversations}
+                activeKey={activeKey}
+                onActiveChange={onConversationClick}
+                menu={conversationOperationMenu}
+                style={{
+                    height: "100%",
+                    overflow: 'scroll',
+                    fontFamily: theme.fontFamily,
+                }}
+                styles={{
+                    item: {
+                        flex: 'none',
+                        fontFamily: theme.fontFamily,
+                    },
+                }}
+            />
+            <Button
+                onClick={onAddConversation}
+                variant='transparent'
+                leftSection={<IconPlus />}
+            >
+                สร้างแชทใหม่
+            </Button>
+        </Stack>
     );
 }
