@@ -141,8 +141,6 @@ function Chat() {
         ...message,
     }));
 
-    console.log(items);
-
     const onSubmit = (conversationKey: Conversation['key'], nextContent: string) => {
         if (!nextContent) return;
         onRequest({
@@ -179,18 +177,35 @@ function Chat() {
         setMessages([]);
     };
 
-    const onDeleteConversation = (conversationKey: Conversation['key']) => {
-        setConversations(prev => prev.filter(({ key }) => key !== conversationKey));
-        if (activeKey === conversationKey) {
-            setActiveKey(undefined);
-        }
-        setMessages([]);
-        notifications.show({
-            title: 'ลบการสนทนา',
-            message: 'การสนทนาถูกลบออกจากประวัติ',
-            color: 'green',
+    const onDeleteConversation = React.useCallback((key: string) => {
+        // ทำทุกอย่างใน callback เดียวกัน
+        setConversations(prev => {
+            // 1. สร้าง conversations array ใหม่ที่ไม่มี conversation ที่จะลบ
+            const newConversations = prev.filter(conv => conv.key !== key);
+            
+            // 2. หา conversation ถัดไปจาก array ใหม่
+            const newActiveKey = newConversations[0]?.key;
+            
+            // 3. ถ้าลบ conversation ที่กำลังดูอยู่ ให้เปลี่ยน activeKey
+            if (key === activeKey) {
+                // ใช้ setTimeout เพื่อให้แน่ใจว่า conversations ถูกอัพเดทก่อน
+                setTimeout(() => {
+                    setActiveKey(newActiveKey);
+                    // อัพเดท messages ให้เป็นของ conversation ใหม่
+                    setMessages(newActiveKey ? messageHistories[newActiveKey] || [] : []);
+                }, 0);
+            }
+            
+            // 4. ลบ messages history
+            setMessageHistories(prev => {
+                const newMessageHistories = { ...prev };
+                delete newMessageHistories[key];
+                return newMessageHistories;
+            });
+            
+            return newConversations;
         });
-    };
+    }, [activeKey, messageHistories]);
 
     const onConversationClick: ConversationsProps['onActiveChange'] = (key) => {
         setActiveKey(key);
@@ -326,11 +341,8 @@ function Chat() {
         </Stack>
     )
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     React.useEffect(() => {
-        if (activeKey) {
-            setMessages(messageHistories[activeKey] || []);
-        }
+        setMessages(activeKey ? messageHistories[activeKey] || [] : []);
     }, [activeKey, messageHistories]);
 
     return (
@@ -419,7 +431,6 @@ function Chat() {
                                                     placement: 'start',
                                                     avatar: <Avatar src={ttRobot} alt="น้องทีที" size="md" />,
                                                     header: 'น้องทีที',
-                                                    typing: { step: 5, interval: 20 },
                                                     loadingRender: () => <Loader color="primary.6" size="sm" />,
                                                     variant: 'outlined',
                                                     style: {
@@ -445,7 +456,10 @@ function Chat() {
                                                 },
                                             }}
                                             style={{ flex: 1 }}
-                                            items={items.length > 0 ? items : [{ content: placeholderNode, variant: 'borderless' }]}
+                                            items={items.length > 0 ? items.map((item, index) => ({
+                                                ...item,
+                                                typing: item.role === 'ai' && index === items.length - 1 ? { step: 5, interval: 20 } : false,
+                                            })) : [{ content: placeholderNode, variant: 'borderless' }]}
                                         />
                                         <Sender
                                             disabled={!activeKey}
