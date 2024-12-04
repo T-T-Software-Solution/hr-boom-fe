@@ -1,5 +1,5 @@
 import '@fontsource/bai-jamjuree';
-import { Flex, Loader, MantineProvider } from '@mantine/core';
+import { Container, Flex, Loader, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import utc from 'dayjs/plugin/utc';
 import { Suspense } from 'react';
+import { ChatWidget } from '../components/chat/widget';
 import { Footer } from '../components/footer/footer';
 import { Header } from '../components/header/header';
 import "../styles/global.scss";
@@ -32,8 +33,11 @@ export const Route = createRootRoute({
           }
         >
           <Header />
-          <Outlet />
+          <Container p="md" h="100vh">
+            <Outlet />
+          </Container>
           <Footer />
+          <ChatWidget />
         </Suspense>
       </ModalsProvider>
       <TanStackRouterDevtools />
