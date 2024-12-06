@@ -5,8 +5,9 @@ import type { MessageInfo } from '@ant-design/x/es/useXChat';
 import { ActionIcon, Avatar, Button, Card, Group, Indicator, type MantineStyleProps, Stack, Text } from '@mantine/core';
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import { IconCloudUpload, IconFlame, IconLink, IconRefresh, IconSparkles } from '@tabler/icons-react';
+import { IconCloudUpload, IconFlame, IconLink, IconRefresh } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import DOMPurify from 'dompurify';
 import React from 'react';
 import ttRobot from '../../assets/tt-robot.jpg';
 import { theme } from '../../theme';
@@ -84,13 +85,24 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                 content: message?.content ?? '',
                 createdAt: message?.createdAt ?? getCurrentDate(),
             }
-
-            await sleep(1000);
+            
+            const qryStr = new URLSearchParams({
+                question: content,
+                tag: '',
+                isNeedGpt: 'false',
+            })
+            const res = await fetch(`https://localhost:58115/api/v1/AskQuestion/GetListBySearch?${qryStr.toString()}`)
+            const data = await res.json()
+            let answer = 'ขออภัยค่ะ ตอนนี้ฉันยังไม่สามารถตอบคำถามของคุณได้ค่ะ'
+            const [firstAnswer] = data
+            if (firstAnswer?.answer) {
+                answer = firstAnswer.answer
+            }
 
             const aiResponse: AgentAIMessage = {
                 conversationKey,
                 type: 'ai',
-                content: `ฉันยังไม่มีความรู้เกี่ยวกับคำถาม "${content}" ค่ะ ฉันจะศึกษาข้อมูลเพิ่มเติมเพื่อตอบคำถามนี้ให้คุณค่ะ`,
+                content: answer,
                 list: [
                     {
                         conversationKey,
@@ -233,7 +245,7 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                         return "สวัสดีตอนเย็นค่ะ 🌅 วันนี้เป็นอย่างไรบ้างคะ?";
                     }
 
-                    return "สวัสดีตอนดึกค่ะ 🌙 อย่าลืมพักผ่อนด้วยนะคะ";
+                    return "สวัสดีตอนดึกค่ะ 🌙 อย่าลืมพักผ่อ���ด้วยนะคะ";
                 })()}
                 description="ฉันคือน้องทีที ผู้ช่วยที่แสนดีของคุณ..."
                 styles={{
@@ -259,35 +271,16 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                         ,
                         children: [
                             {
+                                key: '1-0',
+                                description: "แอปพลิเคชัน 'พ้นภัย' คืออะไร?",
+                            },
+                            {
                                 key: '1-1',
-                                description: "ใครหล่อที่สุดในบริษัท?",
+                                description: "อยากบริจาคอวัยวะต้องทำอะไรบ้าง?",
                             },
                             {
                                 key: '1-2',
-                                description: "ใครชอบแอบอู้ในเวลาทำงาน?",
-                            },
-                            {
-                                key: '1-3',
-                                description: "ทำไมถึงไม่มีใครหล่อเท่เท่าฉัน?",
-                            },
-                        ],
-                    },
-                    {
-                        key: '2',
-                        label:
-                            <Group gap="xs" align="center">
-                                <IconSparkles color="#FFA500" />
-                                <Text fw="bold">กำลังมองหาไอเดียใหม่ใช่ไหม?</Text>
-                            </Group>
-                        ,
-                        children: [
-                            {
-                                key: '1-1',
-                                description: "ช่วยฉันหาไอเดียในการทำโปรเจกต์เกี่ยวกับ AI ทีสิ",
-                            },
-                            {
-                                key: '1-2',
-                                description: "แนะนำสถานที่ท่องเที่ยวที่น่าสนใจในกรุงเทพฯ",
+                                description: "นโยบายของกระทรวงสาธารณสุขเกี่ยวกับการบริจาคอวัยวะคืออะไร?",
                             },
                         ],
                     },
@@ -364,6 +357,19 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                                                 alignSelf: 'end',
                                                 marginRight: 10,
                                             }
+                                        },
+                                        messageRender: (message) => {
+                                            return (<Text>
+                                                <div
+                                                    style={{
+                                                        whiteSpace: 'pre-wrap',
+                                                    }}
+                                                    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: DOMPurify.sanitize(message)
+                                                    }}
+                                                />
+                                            </Text>)
                                         }
                                     },
                                     local: {
