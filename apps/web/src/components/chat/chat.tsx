@@ -1,54 +1,19 @@
-import { Attachments, type AttachmentsProps, Bubble, type PromptProps, Prompts, Sender, Welcome, XProvider, useXAgent, useXChat } from '@ant-design/x';
+import { Attachments, type AttachmentsProps, Bubble, type PromptProps, Sender, XProvider, useXAgent, useXChat } from '@ant-design/x';
 import type { BubbleListProps } from '@ant-design/x/es/bubble/BubbleList';
 import type { Conversation } from '@ant-design/x/es/conversations';
 import type { MessageInfo } from '@ant-design/x/es/useXChat';
 import { ActionIcon, Avatar, Button, Card, Group, Indicator, type MantineStyleProps, Stack, Text } from '@mantine/core';
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import { IconCloudUpload, IconFlame, IconLink, IconRefresh } from '@tabler/icons-react';
+import { IconCloudUpload, IconLink, IconRefresh } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
-import React from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ttRobot from '../../assets/tt-robot.jpg';
 import { theme } from '../../theme';
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-type AgentUserMessage = {
-    conversationKey: Conversation['key'];
-    type: 'local';
-    content: string;
-    createdAt?: Date | null;
-};
-
-type AgentAIMessage = {
-    conversationKey: Conversation['key'];
-    type: 'ai';
-    content?: string;
-    createdAt?: Date | null;
-    list?: (
-        | {
-            conversationKey: Conversation['key'];
-            type: 'text';
-            content: string;
-            createdAt?: Date | null;
-        }
-        | {
-            conversationKey: Conversation['key'];
-            type: 'suggestion';
-            content: string[];
-            createdAt?: Date | null;
-        }
-    )[];
-};
-
-type AgentMessage = AgentUserMessage | AgentAIMessage;
-
-type BubbleMessage = {
-    conkey: Conversation['key'];
-    role: string;
-    created?: Date | null;
-};
+import { PlaceholderNode } from './placeholder-node';
+import type { AgentAIMessage, AgentMessage, AgentUserMessage, BubbleMessage } from './types';
 
 const getCurrentDate = () => dayjs().utc().toDate();
 
@@ -58,8 +23,8 @@ interface ChatProps {
 }
 
 export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
-    const [content, setContent] = React.useState('');
-    const [headerOpen, setHeaderOpen] = React.useState(false);
+    const [content, setContent] = useState('');
+    const [headerOpen, setHeaderOpen] = useState(false);
     const [messageHistories, setMessageHistories, clearMessageHistories] = useLocalStorage<Record<Conversation['key'], MessageInfo<AgentMessage>[]>>({
         key: 'message-histories',
         defaultValue: {},
@@ -68,10 +33,10 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
         key: 'conversation-key',
         defaultValue: crypto.randomUUID(),
     });
-    const [attachedFiles, setAttachedFiles] = React.useState<AttachmentsProps['items']>([]);
+    const [attachedFiles, setAttachedFiles] = useState<AttachmentsProps['items']>([]);
     const isMobileOrTablet = useMediaQuery('(max-width: 992px)');
 
-    const senderRef = React.useRef<HTMLDivElement>(null);
+    const senderRef = useRef<HTMLDivElement>(null);
 
     // Agent for request
     const [agent] = useXAgent<AgentMessage>({
@@ -85,7 +50,7 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                 content: message?.content ?? '',
                 createdAt: message?.createdAt ?? getCurrentDate(),
             }
-            
+
             const qryStr = new URLSearchParams({
                 question: content,
                 tag: '',
@@ -199,7 +164,6 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
         conversationKey: Conversation['key'],
         info: { data: PromptProps; }
     ) => void = (conversationKey, info) => {
-        // onRequest(info.data.description as string);
         onSubmit(conversationKey, info.data.description as string);
     };
 
@@ -228,86 +192,7 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
 
     const handleFileChange: AttachmentsProps['onChange'] = (info) => setAttachedFiles(info.fileList);
 
-    const placeholderNode = (
-        <Stack gap="md" maw={600}>
-            <Welcome
-                variant='borderless'
-                icon={<Avatar src={ttRobot} alt="น้องทีที" size="lg" />}
-                title={(() => {
-                    const hour = new Date().getHours();
-                    if (hour >= 5 && hour < 12) {
-                        return "สวัสดีตอนเช้าค่ะ ✨ วันนี้อากาศดีนะคะ";
-                    }
-                    if (hour >= 12 && hour < 17) {
-                        return "สวัสดีตอนกลางวันค่ะ 🌞 ทานข้าวแล้วหรือยังคะ?";
-                    }
-                    if (hour >= 17 && hour < 22) {
-                        return "สวัสดีตอนเย็นค่ะ 🌅 วันนี้เป็นอย่างไรบ้างคะ?";
-                    }
-
-                    return "สวัสดีตอนดึกค่ะ 🌙 อย่าลืมพักผ่อ���ด้วยนะคะ";
-                })()}
-                description="ฉันคือน้องทีที ผู้ช่วยที่แสนดีของคุณ..."
-                styles={{
-                    title: {
-                        fontFamily: theme.fontFamily,
-                    },
-                    description: {
-                        fontFamily: theme.fontFamily,
-                    },
-                }}
-            />
-
-            <Prompts
-                title="คุณต้องการให้ฉันช่วยเหลืออะไรไหมคะ?"
-                items={[
-                    {
-                        key: '1',
-                        label:
-                            <Group gap="xs" align="center">
-                                <IconFlame color="#FF4D4F" />
-                                <Text fw="bold">คำถามยอดนิยม</Text>
-                            </Group>
-                        ,
-                        children: [
-                            {
-                                key: '1-0',
-                                description: "แอปพลิเคชัน 'พ้นภัย' คืออะไร?",
-                            },
-                            {
-                                key: '1-1',
-                                description: "อยากบริจาคอวัยวะต้องทำอะไรบ้าง?",
-                            },
-                            {
-                                key: '1-2',
-                                description: "นโยบายของกระทรวงสาธารณสุขเกี่ยวกับการบริจาคอวัยวะคืออะไร?",
-                            },
-                        ],
-                    },
-                ]}
-                styles={{
-                    title: {
-                        fontFamily: theme.fontFamily,
-                    },
-                    item: {
-                        fontFamily: theme.fontFamily,
-                        flex: 'none',
-                        width: '270px',
-                        backgroundImage: "linear-gradient(137deg, #fff5e6 0%, #ffe7e7 100%)",
-                        border: 0,
-                    },
-                    subItem: {
-                        fontFamily: theme.fontFamily,
-                        background: 'rgba(255,255,255,0.45)',
-                        border: '1px solid #FFF',
-                    },
-                }}
-                onItemClick={(info) => onPromptsItemClick(activeKey ?? '', info)}
-            />
-        </Stack>
-    )
-
-    React.useEffect(() => {
+    useEffect(() => {
         setMessages(activeKey ? messageHistories[activeKey] || [] : []);
     }, [activeKey, messageHistories]);
 
@@ -335,10 +220,14 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
             </Card.Section>
 
             <Card.Section py="md">
-                <XProvider direction="ltr">
+                <XProvider
+                    direction="ltr"
+                >
                     <Group align='flex-start' pos="relative" h={height} w={width}>
                         <Stack gap="md" justify='flex-start' px="md" w="100%" h="100%">
-                            {items.length < 1 && placeholderNode}
+                            {items.length < 1 && (
+                                <PlaceholderNode onPromptsItemClick={(info) => onPromptsItemClick(activeKey, info)} />
+                            )}
                             <Bubble.List
                                 autoScroll
                                 roles={{
@@ -370,7 +259,7 @@ export const Chat: React.FC<ChatProps> = ({ height = 700, width = 400 }) => {
                                                     }}
                                                 />
                                             </Text>)
-                                        }
+                                        },
                                     },
                                     local: {
                                         placement: 'end',
