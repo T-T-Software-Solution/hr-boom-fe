@@ -15,7 +15,8 @@
       "./.vscode",
       "./apps/web-next/.next",
       "./apps/backoffice/.next",
-      "./apps/backoffice/public"
+      "./apps/backoffice/public",
+      "./apps/landing/public"
     ]
   },
   "organizeImports": {
@@ -36,7 +37,8 @@
       "./.vscode",
       "./apps/web-next/.next",
       "./apps/backoffice/.next",
-      "./apps/backoffice/public"
+      "./apps/backoffice/public",
+      "./apps/landing/public"
     ]
   },
   "linter": {
@@ -71,7 +73,8 @@
       "./apps/web-next/.next",
       "./apps/web-next/index.d.ts",
       "./apps/backoffice/.next",
-      "./apps/backoffice/public"
+      "./apps/backoffice/public",
+      "./apps/landing/public"
     ]
   },
   "javascript": {

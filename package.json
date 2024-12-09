@@ -16,13 +16,17 @@
     "backoffice:dev": "nx serve backoffice",
     "backoffice:build": "nx build backoffice",
     "backoffice:start": "nx start backoffice",
-    "backoffice:generate-schema": "openapi-typescript ./libs/api/src/schemas/backoffice/backoffice.json -o ./libs/api/src/schemas/backoffice/backoffice.d.ts"
+    "backoffice:generate-schema": "openapi-typescript ./libs/api/src/schemas/backoffice/backoffice.json -o ./libs/api/src/schemas/backoffice/backoffice.d.ts",
+    "landing:dev": "nx serve landing",
+    "landing:build": "nx build landing",
+    "landing:start": "nx preview landing"
   },
   "private": true,
   "type": "module",
   "dependencies": {
     "@ant-design/x": "^1.0.1",
     "@fontsource/bai-jamjuree": "^5.1.0",
+    "@fontsource/ibm-plex-sans-thai": "^5.1.0",
     "@mantine/carousel": "^7.14.3",
     "@mantine/charts": "^7.14.3",
     "@mantine/code-highlight": "^7.14.3",
@@ -65,7 +69,9 @@
     "pdfjs-dist": "^4.4.168",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-icons": "^5.4.0",
     "react-pdf": "^9.1.1",
+    "react-router-dom": "^7.0.2",
     "recharts": "^2.13.3",
     "sanitize-filename": "^1.6.3",
     "sharp": "^0.33.5",

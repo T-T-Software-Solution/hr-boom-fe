@@ -23,6 +23,7 @@
       "@tt-ss-hr/shared-utils": ["libs/shared/utils/src/index.ts"],
       "@backoffice/*": ["apps/backoffice/src/*"],
       "@web-next/*": ["apps/web-next/src/*"],
+      "@landing/*": ["apps/landing/src/*"],
       // "@web/*": ["apps/web/src/*"]
     }
   },
