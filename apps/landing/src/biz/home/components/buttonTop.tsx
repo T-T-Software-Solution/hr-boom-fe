@@ -9,7 +9,7 @@ export const ButtonTop = () => {
   };
   return (
     <div
-      className="fixed bottom-16 right-5 flex items-center gap-2 flex-col cursor-pointer"
+      className="fixed bottom-16 right-5 flex items-center gap-2 flex-col cursor-pointer pb-4"
       onClick={() => scrollToTop()}
     >
       <button
@@ -18,7 +18,7 @@ export const ButtonTop = () => {
       >
         <FaChevronUp className="text-white" />
       </button>
-      <span className="font-bold text-xs">Go to top</span>
+      {/* <span className="font-bold text-xs">Go to top</span> */}
     </div>
   );
 };

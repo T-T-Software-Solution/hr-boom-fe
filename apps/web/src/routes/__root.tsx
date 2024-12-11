@@ -4,11 +4,12 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { ChatProvider, ChatWidget } from '@tt-ss-hr/shared-ui';
 import dayjs from 'dayjs';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import utc from 'dayjs/plugin/utc';
 import { Suspense } from 'react';
-import { ChatWidget } from '../components/chat/widget';
+import ttRobot from '../assets/tt-robot.jpg';
 import { Footer } from '../components/footer/footer';
 import { Header } from '../components/header/header';
 import "../styles/global.scss";
@@ -32,12 +33,16 @@ export const Route = createRootRoute({
             </Flex>
           }
         >
-          <Header />
-          <Container p="md" h="100vh">
-            <Outlet />
-          </Container>
-          <Footer />
-          <ChatWidget />
+          <ChatProvider config={{
+            agentAvatarImageSrc: ttRobot,
+          }}>
+            <Header />
+            <Container p="md" h="100vh">
+              <Outlet />
+            </Container>
+            <Footer />
+            <ChatWidget />
+          </ChatProvider>
         </Suspense>
       </ModalsProvider>
       <TanStackRouterDevtools />

@@ -1,6 +1,5 @@
-import { Container } from '@mantine/core';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { Chat } from '../components/chat/chat';
+import { Chat } from '@tt-ss-hr/shared-ui';
 
 export const Route = createLazyFileRoute('/chat')({
     component: ChatPage,

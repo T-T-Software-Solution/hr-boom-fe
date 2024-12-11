@@ -8,42 +8,42 @@ export const Footer = () => {
     setFontSize(size);
   };
 
-  useEffect(() => {
-    let size = "16px";
-    if (fontSize === "base") {
-      size = "16px";
-    } else if (fontSize === "lg") {
-      size = "20px";
-    } else if (fontSize === "xl") {
-      size = "24px";
-    }
+  // useEffect(() => {
+  //   let size = "16px";
+  //   if (fontSize === "base") {
+  //     size = "16px";
+  //   } else if (fontSize === "lg") {
+  //     size = "20px";
+  //   } else if (fontSize === "xl") {
+  //     size = "24px";
+  //   }
 
-    // Create style for all elements
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = `
-      * {
-        font-size: ${size};
-        line-height: ${parseInt(size) * 1.5}px;
-      }
+  //   // Create style for all elements
+  //   const styleSheet = document.createElement("style");
+  //   styleSheet.textContent = `
+  //     * {
+  //       font-size: ${size};
+  //       line-height: ${parseInt(size) * 1.5}px;
+  //     }
       
-      :root {
-        font-size: ${size};
-        line-height: ${parseInt(size) * 1.5}px;
-      }
-    `;
+  //     :root {
+  //       font-size: ${size};
+  //       line-height: ${parseInt(size) * 1.5}px;
+  //     }
+  //   `;
 
-    const existingStyle = document.querySelector("style[data-custom-styles]");
-    if (existingStyle) {
-      existingStyle.remove();
-    }
+  //   const existingStyle = document.querySelector("style[data-custom-styles]");
+  //   if (existingStyle) {
+  //     existingStyle.remove();
+  //   }
 
-    styleSheet.setAttribute("data-custom-styles", "true");
-    document.head.appendChild(styleSheet);
+  //   styleSheet.setAttribute("data-custom-styles", "true");
+  //   document.head.appendChild(styleSheet);
 
-    return () => {
-      styleSheet.remove();
-    };
-  }, [fontSize]);
+  //   return () => {
+  //     styleSheet.remove();
+  //   };
+  // }, [fontSize]);
 
   return (
     <footer>

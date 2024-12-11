@@ -1,0 +1,76 @@
+/* Add @layer to Tailwind Base to prevent Preflight conflicts */
+@layer tailwind {
+  @tailwind base;
+}
+
+/* Mantine core */
+@import "@mantine/core/styles.css";
+
+/* Mantine foundational components */
+@import "@mantine/notifications/styles.css";
+@import "@mantine/carousel/styles.css"; 
+@import "@mantine/core/styles/ScrollArea.css";
+/* @import "@mantine/core/styles/UnstyledButton.css"; */
+@import "@mantine/core/styles/VisuallyHidden.css";
+@import "@mantine/core/styles/Paper.css";
+@import "@mantine/core/styles/Popover.css";
+@import "@mantine/core/styles/CloseButton.css";
+@import "@mantine/core/styles/Group.css";
+@import "@mantine/core/styles/Loader.css";
+@import "@mantine/core/styles/Overlay.css";
+@import "@mantine/core/styles/ModalBase.css";
+@import "@mantine/core/styles/Input.css";
+@import "@mantine/core/styles/Flex.css";
+@import "@mantine/dates/styles.css";
+@import "mantine-react-table/styles.css";
+@import "@mantine/core/styles/Button.css";
+@import "@mantine/dropzone/styles.css";
+
+/* react-pdf foundational components */
+@import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+@import "react-pdf/dist/esm/Page/TextLayer.css";
+
+/* Tailwind components & utilities */
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  // font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  // font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide {
+  animation: slide 30s linear infinite;
+}
+
+.infinite-slide {
+  min-width: fit-content;
+}
+
+.infinite-slide:hover {
+  animation-play-state: paused;
+}

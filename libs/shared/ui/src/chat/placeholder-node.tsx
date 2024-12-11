@@ -1,12 +1,10 @@
 import { Prompts, type PromptsProps, Welcome } from "@ant-design/x";
 import { Avatar, Group, Stack, Text } from "@mantine/core";
 import { IconFlame } from "@tabler/icons-react";
-import { theme } from "../../theme";
-import dayjs from "dayjs";
-import ttRobot from "../../assets/tt-robot.jpg";
+import { useChatConfig } from "./provider";
 
 const getWelcomeMessage = () => {
-    const hour = dayjs().hour();
+    const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
         return "สวัสดีตอนเช้าค่ะ ✨ วันนี้อากาศดีนะคะ";
     }
@@ -26,27 +24,23 @@ interface PlaceholderNodeProps {
 }
 
 export const PlaceholderNode = ({ onPromptsItemClick }: PlaceholderNodeProps) => {
+    const config = useChatConfig();
     const welcomeMessage = getWelcomeMessage();
 
     return (
         <Stack gap="md" maw={600}>
             <Welcome
                 variant='borderless'
-                icon={<Avatar src={ttRobot} alt="น้องทีที" size="lg" />}
+                icon={<Avatar src={config.agentAvatarImageSrc} alt={config.agentName} size="lg">
+                    {config.agentName}
+                </Avatar>}
                 title={welcomeMessage}
-                description="ฉันคือน้องทีที ผู้ช่วยที่แสนดีของคุณ..."
-                styles={{
-                    title: {
-                        fontFamily: theme.fontFamily,
-                    },
-                    description: {
-                        fontFamily: theme.fontFamily,
-                    },
-                }}
+                description={`ฉันคือ ${config.agentName} ผู้ช่วยที่แสนดีของคุณ...`}
             />
 
             <Prompts
                 title="คุณต้องการให้ฉันช่วยเหลืออะไรไหมคะ?"
+                wrap
                 items={[
                     {
                         key: '1',
@@ -73,18 +67,13 @@ export const PlaceholderNode = ({ onPromptsItemClick }: PlaceholderNodeProps) =>
                     },
                 ]}
                 styles={{
-                    title: {
-                        fontFamily: theme.fontFamily,
-                    },
                     item: {
-                        fontFamily: theme.fontFamily,
                         flex: 'none',
                         width: '270px',
                         backgroundImage: "linear-gradient(137deg, #fff5e6 0%, #ffe7e7 100%)",
                         border: 0,
                     },
                     subItem: {
-                        fontFamily: theme.fontFamily,
                         background: 'rgba(255,255,255,0.45)',
                         border: '1px solid #FFF',
                     },

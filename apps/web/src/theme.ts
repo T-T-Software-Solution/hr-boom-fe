@@ -1,21 +1,22 @@
 import { createTheme } from '@mantine/core';
 
 export const theme = createTheme({
+    scale: 1,
     primaryColor: 'primary',
     primaryShade: { light: 4, dark: 6 },
     fontFamily: 'Bai Jamjuree',
     colors: {
         primary: [
-            '#ffece4',
-            '#ffd8cd',
-            '#ffb19a',
-            '#ff8663',
-            '#ff6336',
-            '#ff4c18',
-            '#ff3f07',
-            '#e43100',
-            '#cc2800',
-            '#b21d00',
+            "#e1f8ff",
+            "#cbedff",
+            "#9ad7ff",
+            "#64c1ff",
+            "#3aaefe",
+            "#20a2fe",
+            "#099cff",
+            "#0088e4",
+            "#0079cd",
+            "#0068b6"
         ],
         slate: [
             '#f1f5f9',

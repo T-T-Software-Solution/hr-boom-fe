@@ -35,3 +35,10 @@ export type BubbleMessage = {
     role: string;
     created?: Date | null;
 };
+
+export interface AgentConfiguration {
+    agentAvatarImageSrc: string;
+    agentName: string;
+    userAvatarImageSrc: string;
+    userName: string;
+}
